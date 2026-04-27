@@ -19,6 +19,11 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "BSA Workbook Generator",
   description: "AI-powered Merit Badge workbooks for Scouts",
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
 };
 
 import { Analytics } from "@vercel/analytics/next";
