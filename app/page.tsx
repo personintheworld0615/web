@@ -72,15 +72,7 @@ export default function Home() {
       <div className="z-10 w-full max-w-4xl mx-auto flex flex-col items-center">
         
         <header className="mb-12 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-3 mb-6 bg-olive/10 px-4 py-2 rounded-full border border-olive/20 text-olive font-mono text-xs font-bold uppercase tracking-widest"
-          >
-            <span>Blaze Partners</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-crimson" />
-            <span>Always Prepared</span>
-          </motion.div>
+
           
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
