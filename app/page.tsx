@@ -95,7 +95,7 @@ export default function Home() {
     <main className="bg-oat text-charcoal selection:bg-olive selection:text-oat overflow-x-hidden font-sans">
       
       {/* Scroll-Driven Hero Section */}
-      <section ref={heroRef} className="relative min-h-[95vh] flex flex-col items-center pt-16 md:pt-24 pb-20 px-6">
+      <section ref={heroRef} className="relative min-h-[95vh] flex flex-col items-center pt-16 md:pt-12 pb-20 px-6">
         
         {/* Background Decorative Animations */}
         <motion.div 
