@@ -38,6 +38,7 @@ export default function RootLayout({
     <html lang="en" className={cn(newsreader.variable, spaceMono.variable)}>
       <body className="antialiased font-sans">
         <Navbar />
+        <div className="h-24 md:h-32 pointer-events-none" />
         {children}
         <Analytics />
       </body>

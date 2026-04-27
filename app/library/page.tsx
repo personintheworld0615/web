@@ -149,12 +149,6 @@ function BadgeCard({ badge, open, onToggle, workbooks }: {
             <div className="px-5 pb-5 border-t border-charcoal/5 pt-4">
               <div className="flex flex-col sm:flex-row sm:items-start gap-4 mb-6">
                 <p className="text-sm text-charcoal/60 leading-relaxed flex-1 italic">{badge.description}</p>
-                <Link
-                  href={`/?badge=${encodeURIComponent(badge.name)}`}
-                  className="shrink-0 px-5 py-2 bg-olive text-oat rounded-full font-mono text-xs uppercase tracking-widest hover:bg-charcoal transition-colors text-center"
-                >
-                  Generate New Workbook →
-                </Link>
               </div>
 
               <div className="space-y-2">
@@ -236,7 +230,7 @@ export default function LibraryPage() {
   };
 
   return (
-    <main className="min-h-screen bg-oat text-charcoal pt-24 p-6 md:p-12">
+    <main className="min-h-screen bg-oat text-charcoal pt-8 p-6 md:p-12">
       <div className="max-w-4xl mx-auto">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
