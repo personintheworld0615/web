@@ -210,6 +210,7 @@ export default function LibraryPage() {
   const [openBadge, setOpenBadge] = useState<string | null>(null);
   const [workbooks, setWorkbooks] = useState<Workbook[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     supabase
@@ -222,12 +223,18 @@ export default function LibraryPage() {
       });
   }, []);
 
-  const requiredBadges = EAGLE_BADGES.filter(b => b.required);
-  const choiceBadges = EAGLE_BADGES.filter(b => !b.required);
+  const filteredBadges = EAGLE_BADGES.filter(b => 
+    b.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const requiredBadges = filteredBadges.filter(b => b.required);
+  const choiceBadges = filteredBadges.filter(b => !b.required);
 
   const getWorkbooksForBadge = (badgeName: string) => {
     return workbooks.filter(wb => wb.badge_name.toLowerCase() === badgeName.toLowerCase());
   };
+
+  const recentWorkbooks = workbooks.slice(0, 4);
 
   return (
     <main className="min-h-screen bg-oat text-charcoal pt-8 p-6 md:p-12">
@@ -243,46 +250,91 @@ export default function LibraryPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-charcoal/60 text-lg mb-12"
+          className="text-charcoal/60 text-lg mb-8"
         >
           All Eagle Scout required merit badges — plus a live feed of generated workbooks.
         </motion.p>
 
-        {/* Eagle Required Badges */}
-        <section className="mb-14">
-          <h2 className="font-mono text-xs uppercase tracking-widest text-charcoal/40 mb-4">
-            Required Badges (11)
-          </h2>
-          <div className="flex flex-col gap-2">
-            {requiredBadges.map(badge => (
-              <BadgeCard
-                key={badge.name}
-                badge={badge}
-                open={openBadge === badge.name}
-                onToggle={() => setOpenBadge(openBadge === badge.name ? null : badge.name)}
-                workbooks={getWorkbooksForBadge(badge.name)}
-              />
-            ))}
+        {/* Search Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="mb-12 relative"
+        >
+          <input
+            type="text"
+            placeholder="Search merit badges..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-white/60 backdrop-blur-sm border border-charcoal/10 rounded-2xl px-6 py-4 outline-none focus:border-olive focus:ring-2 focus:ring-olive/20 transition-all text-charcoal placeholder:text-charcoal/30 font-mono text-sm"
+          />
+          <div className="absolute right-5 top-1/2 -translate-y-1/2 text-charcoal/30">
+            🔍
           </div>
-        </section>
+        </motion.div>
+
+        {/* Recently Generated */}
+        {!searchQuery && recentWorkbooks.length > 0 && (
+          <section className="mb-14">
+            <h2 className="font-mono text-xs uppercase tracking-widest text-charcoal/40 mb-4 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-olive animate-pulse"></span>
+              Recently Generated
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {recentWorkbooks.map(wb => (
+                <WorkbookCard key={wb.id} wb={wb} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Eagle Required Badges */}
+        {requiredBadges.length > 0 && (
+          <section className="mb-14">
+            <h2 className="font-mono text-xs uppercase tracking-widest text-charcoal/40 mb-4">
+              Required Badges ({requiredBadges.length})
+            </h2>
+            <div className="flex flex-col gap-2">
+              {requiredBadges.map(badge => (
+                <BadgeCard
+                  key={badge.name}
+                  badge={badge}
+                  open={openBadge === badge.name}
+                  onToggle={() => setOpenBadge(openBadge === badge.name ? null : badge.name)}
+                  workbooks={getWorkbooksForBadge(badge.name)}
+                />
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Choice Badges */}
-        <section className="mb-14">
-          <h2 className="font-mono text-xs uppercase tracking-widest text-charcoal/40 mb-4">
-            Choice Badges (pick one from each group)
-          </h2>
-          <div className="flex flex-col gap-2">
-            {choiceBadges.map(badge => (
-              <BadgeCard
-                key={badge.name}
-                badge={badge}
-                open={openBadge === badge.name}
-                onToggle={() => setOpenBadge(openBadge === badge.name ? null : badge.name)}
-                workbooks={getWorkbooksForBadge(badge.name)}
-              />
-            ))}
+        {choiceBadges.length > 0 && (
+          <section className="mb-14">
+            <h2 className="font-mono text-xs uppercase tracking-widest text-charcoal/40 mb-4">
+              Choice Badges ({choiceBadges.length})
+            </h2>
+            <div className="flex flex-col gap-2">
+              {choiceBadges.map(badge => (
+                <BadgeCard
+                  key={badge.name}
+                  badge={badge}
+                  open={openBadge === badge.name}
+                  onToggle={() => setOpenBadge(openBadge === badge.name ? null : badge.name)}
+                  workbooks={getWorkbooksForBadge(badge.name)}
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* No Results */}
+        {requiredBadges.length === 0 && choiceBadges.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-charcoal/40 font-mono italic">No badges found matching "{searchQuery}"</p>
           </div>
-        </section>
+        )}
       </div>
     </main>
   );

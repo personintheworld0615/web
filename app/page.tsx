@@ -44,7 +44,7 @@ export default function Home() {
       const filename = nameMatch ? nameMatch[1] : `workbook.${format}`;
       const badgeName = filename.replace(/-workbook\.(pdf|docx)$/, "").replace(/-/g, " ");
 
-      // Handle file download
+      // Handle file download locally
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -55,12 +55,33 @@ export default function Home() {
       window.URL.revokeObjectURL(url);
       a.remove();
 
-      // Log to Supabase library (fire and forget)
-      supabase.from("workbooks").insert({
+      // Upload to Supabase Storage
+      const uniqueFilename = `${Date.now()}-${filename}`;
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from("workbooks")
+        .upload(uniqueFilename, blob, {
+          contentType: blob.type,
+        });
+
+      if (uploadError) {
+        console.error("Storage upload error:", uploadError);
+        // Continue anyway so the user gets their file locally, even if public storage fails
+      }
+
+      let publicUrl = null;
+      if (uploadData) {
+        const { data: urlData } = supabase.storage
+          .from("workbooks")
+          .getPublicUrl(uniqueFilename);
+        publicUrl = urlData.publicUrl;
+      }
+
+      // Log to Supabase library
+      await supabase.from("workbooks").insert({
         badge_name: badgeName || "Unknown Badge",
         format,
-        file_url: null, // no public storage URL yet
-      }).then(() => {});
+        file_url: publicUrl,
+      });
     } catch (err: any) {
       setError(err.message);
     } finally {
