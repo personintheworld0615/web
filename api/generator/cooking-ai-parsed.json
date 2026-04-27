@@ -1,0 +1,589 @@
+{
+  "meta": {
+    "title": "Cooking",
+    "subtitle": "Merit Badge Workbook",
+    "description": "This workbook can help you but you still need to read the merit badge pamphlet.\nThis Workbook can help you organize your thoughts as you prepare to meet with your merit badge counselor.\nMerit Badge Counselors may not require the use of this or any similar workbooks.\nYou still must satisfy your counselor that you can demonstrate each skill and have learned the information.\nYou should use the work space provided for each requirement to keep track of which requirements have been completed,\nand to make notes for discussing the item with your counselor, not for providing full and complete answers.\nIf a requirement says that you must take an action using words such as \"discuss\", \"show\",\n\"tell\", \"explain\", \"demonstrate\", \"identify\", etc, that is what you must do.\nNo one may add or subtract from the official requirements found on Scouting.org.",
+    "revision_note": "The requirements were last revised on January 1, 2024  \u2022  This workbook was updated in January 2024.",
+    "participant_fields": [
+      {
+        "label": "Scout's Name",
+        "width": "large"
+      },
+      {
+        "label": "Unit",
+        "width": "large"
+      },
+      {
+        "label": "Date Started",
+        "width": "medium"
+      },
+      {
+        "label": "Counselor's Name",
+        "width": "large"
+      },
+      {
+        "label": "Phone No.",
+        "width": "large"
+      },
+      {
+        "label": "Email",
+        "width": "large"
+      }
+    ],
+    "footer_contact": "Please submit errors, omissions, comments or suggestions about this workbook to: Workbooks@USScouts.Org\nComments or suggestions for changes to the requirements for the merit badge should be sent to: Merit.Badge@Scouting.Org",
+    "copyright": "Workbook \u00a9 Copyright 2024 - U.S. Scouting Service Project, Inc. - All Rights Reserved\nRequirements \u00a9 Copyright, Boy Scouts of America (Used with permission.)\nThis workbook may be reproduced and used locally by Scouts and Scouters for purposes consistent with the programs of the Boy Scouts of America (BSA), the World Organization of the Scout Movement (WOSM) or other Scouting and Guiding Organizations. However it may NOT be used or reproduced for electronic redistribution or for commercial or other non-Scouting purposes without the express permission of the U. S. Scouting Service Project, Inc. (USSSP)."
+  },
+  "requirements": [
+    {
+      "id": "1",
+      "text": "Health and safety. Do the following:",
+      "note": null,
+      "component": "text_lines",
+      "component_params": {
+        "lines": 6
+      },
+      "subitems": [
+        {
+          "id": "a",
+          "text": "Explain to your counselor the most likely hazards you may encounter while participating in cooking activities and what you should do to anticipate, help prevent, mitigate, and respond to these hazards.",
+          "note": "Resources: 6 Campfire Cooking Mistakes to Avoid (video), 5 Mistakes EVERY New Camper Makes COOKING (video)",
+          "component": "text_lines",
+          "component_params": {
+            "lines": 6
+          },
+          "subitems": []
+        },
+        {
+          "id": "b",
+          "text": "Show that you know first aid for and how to prevent injuries or illnesses that could occur while preparing meals and eating, including burns and scalds, cuts, choking, and allergic reactions.",
+          "note": "Resources: Treating Burns and Cuts (video), Food Allergy with Anaphylaxis (video), What to Do When an Adult is Choking (video)",
+          "component": "checklist",
+          "component_params": {
+            "items": [
+              "Burns and scalds",
+              "Cuts",
+              "Choking",
+              "Allergic reactions"
+            ]
+          },
+          "subitems": []
+        },
+        {
+          "id": "c",
+          "text": "Describe how meat, fish, chicken, eggs, dairy products, and fresh vegetables should be stored, transported, and properly prepared for cooking. Explain how to prevent cross-contamination.",
+          "note": "Resource: Basic Food Safety: Avoiding Cross Contamination (video)",
+          "component": "text_lines",
+          "component_params": {
+            "lines": 6
+          },
+          "subitems": []
+        },
+        {
+          "id": "d",
+          "text": "Discuss with your counselor food allergies, food intolerance, and food-related illnesses and diseases. Explain why someone who handles or prepares food needs to be aware of these concerns.",
+          "note": "Resources: Food Allergy Awareness (video), What's a Food Allergy and What's Not? (video)",
+          "component": "text_lines",
+          "component_params": {
+            "lines": 6
+          },
+          "subitems": []
+        },
+        {
+          "id": "e",
+          "text": "Discuss with your counselor why reading food labels is important. Explain how to identify common allergens such as peanuts, tree nuts, milk, eggs, wheat, soy, and shellfish.",
+          "note": "Resource: 10 Rules for Reading a Food Label (video)",
+          "component": "text_lines",
+          "component_params": {
+            "lines": 6
+          },
+          "subitems": []
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "text": "Nutrition. Do the following:",
+      "note": null,
+      "component": "text_lines",
+      "component_params": {
+        "lines": 6
+      },
+      "subitems": [
+        {
+          "id": "a",
+          "text": "Using the MyPlate food guide or the current USDA nutrition model, give five examples for EACH of the following food groups, the recommended number of daily servings, and the recommended serving size: (1) Fruits (2) Vegetables (3) Grains (4) Proteins (5) Dairy",
+          "note": "Resource: MyPlate Food Groups (website)",
+          "component": "food_groups_table",
+          "component_params": {
+            "groups": [
+              "Fruits",
+              "Vegetables",
+              "Grains",
+              "Proteins",
+              "Dairy"
+            ]
+          },
+          "subitems": []
+        },
+        {
+          "id": "b",
+          "text": "Explain why you should limit your intake of oils and sugars.",
+          "note": "Resource: Tips for Limiting Sugar in Your Diet (video)",
+          "component": "text_lines",
+          "component_params": {
+            "lines": 6
+          },
+          "subitems": []
+        },
+        {
+          "id": "c",
+          "text": "Track your daily level of activity and your daily caloric need based on your activity for five days. Then, based on the MyPlate food guide, discuss with your counselor an appropriate meal plan for yourself for one day.",
+          "note": "Resource: MyPlate Food Plan (website)",
+          "component": "tracking_grid",
+          "component_params": {
+            "columns": [
+              "Day 1",
+              "Day 2",
+              "Day 3",
+              "Day 4",
+              "Day 5"
+            ],
+            "row_labels": [
+              "Activity",
+              "Calories"
+            ]
+          },
+          "subitems": []
+        },
+        {
+          "id": "d",
+          "text": "Discuss your current eating habits with your counselor and what you can do to eat healthier, based on the MyPlate food guide.",
+          "note": "Resource: Healthy Eating Tip Sheets (website)",
+          "component": "text_lines",
+          "component_params": {
+            "lines": 6
+          },
+          "subitems": []
+        },
+        {
+          "id": "e",
+          "text": "Discuss the following food label terms: calorie, fat, saturated fat, trans fat, cholesterol, sodium, carbohydrate, dietary fiber, sugar, and protein. Explain how to calculate total carbohydrates and nutritional values for two servings, based on the serving size specified on the label.",
+          "note": "Resource: How to Read Food Labels (video)",
+          "component": "text_lines",
+          "component_params": {
+            "lines": 6
+          },
+          "subitems": []
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "text": "Cooking Basics. Do the following:",
+      "note": null,
+      "component": "text_lines",
+      "component_params": {
+        "lines": 6
+      },
+      "subitems": [
+        {
+          "id": "a",
+          "text": "Discuss the following cooking methods. For each one, describe the equipment needed, how temperature control is maintained, and name at least one food that can be cooked using that method: baking, boiling, broiling, pan frying, simmering, microwaving, air frying, grilling, foil cooking, and Dutch oven.",
+          "note": "Resources: Types of Cooking Techniques (video), 6 Tips to Master Foil Packet Cooking (video), Dutch Oven Basics for Beginners (video)",
+          "component": "structured_table",
+          "component_params": {
+            "row_header": "Method",
+            "columns": [
+              "Equipment Needed",
+              "Temperature Control",
+              "Example Food"
+            ],
+            "rows": [
+              "Baking",
+              "Boiling",
+              "Broiling",
+              "Pan Frying",
+              "Simmering",
+              "Microwaving",
+              "Air Frying",
+              "Grilling",
+              "Foil Cooking",
+              "Dutch Oven"
+            ]
+          },
+          "subitems": []
+        },
+        {
+          "id": "b",
+          "text": "Discuss the benefits of using a camp stove on an outing vs. a charcoal or wood fire.",
+          "note": "Resource: Camp Stove vs Campfires (website)",
+          "component": "comparison_table",
+          "component_params": {
+            "items": [
+              "Camp Stove",
+              "Charcoal or Wood Fire"
+            ],
+            "attributes": [
+              "Benefits"
+            ]
+          },
+          "subitems": []
+        },
+        {
+          "id": "c",
+          "text": "Describe for your counselor how to manage your time when preparing a meal so components for each course are ready to serve at the correct time.",
+          "note": "Resource: Timing Your Meals (video)",
+          "component": "text_lines",
+          "component_params": {
+            "lines": 6
+          },
+          "subitems": []
+        },
+        {
+          "id": "d",
+          "text": "Explain and give examples of how taste, texture, and smell impact what we eat.",
+          "note": "Resource: How Your Sense of Smell Helps You Savor Flavor (video)",
+          "component": "text_lines",
+          "component_params": {
+            "lines": 6
+          },
+          "subitems": []
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "text": "Cooking at Home. Do the following:",
+      "note": "Note: The meals for requirement 4 may be prepared on different days, and they need not be prepared consecutively.",
+      "component": "text_lines",
+      "component_params": {
+        "lines": 6
+      },
+      "subitems": [
+        {
+          "id": "a",
+          "text": "Using the MyPlate food guide, plan menus for three full days of meals (three breakfasts, three lunches, and three dinners) plus one dessert. Your menus should include enough to feed yourself and at least one adult. List the equipment and utensils needed to prepare and serve these meals.",
+          "note": "Resource: MyPlate Kitchen (website)",
+          "component": "meal_planner",
+          "component_params": {
+            "days": 3,
+            "meal_types": [
+              "Breakfast",
+              "Lunch",
+              "Dinner",
+              "Dessert"
+            ]
+          },
+          "subitems": []
+        },
+        {
+          "id": "b",
+          "text": "Find recipes for each meal. Create a shopping list for your meals showing the amount of food needed to prepare for the number of people you will serve. Determine the cost for each meal.",
+          "note": "Resource: MyPlate Kitchen (website)",
+          "component": "shopping_list_table",
+          "component_params": {
+            "meal_sections": [
+              "Breakfast 1",
+              "Lunch 1",
+              "Dinner 1",
+              "Dessert 1",
+              "Breakfast 2",
+              "Lunch 2",
+              "Dinner 2",
+              "Dessert 2",
+              "Breakfast 3",
+              "Lunch 3",
+              "Dinner 3",
+              "Dessert 3"
+            ]
+          },
+          "subitems": []
+        },
+        {
+          "id": "c",
+          "text": "Share and discuss your meal plan and shopping list with your counselor.",
+          "note": null,
+          "component": "text_lines",
+          "component_params": {
+            "lines": 6
+          },
+          "subitems": []
+        },
+        {
+          "id": "d",
+          "text": "Using at least five of the 10 cooking methods from requirement 3, prepare and serve yourself and at least one adult one breakfast, one lunch, one dinner, and one dessert from the meals you planned.",
+          "note": null,
+          "component": "text_lines",
+          "component_params": {
+            "lines": 6
+          },
+          "subitems": []
+        },
+        {
+          "id": "e",
+          "text": "Time your cooking to have each meal ready to serve at the proper time. Have an adult verify the preparation of the meal to your counselor.",
+          "note": "Resource: Timing Your Meals (video)",
+          "component": "text_lines",
+          "component_params": {
+            "lines": 6
+          },
+          "subitems": []
+        },
+        {
+          "id": "f",
+          "text": "After each meal, ask a person you served to evaluate the meal on presentation and taste, then evaluate your own meal. Discuss what you learned with your counselor, including any adjustments that could have improved or enhanced your meals. Tell how planning and preparation help ensure a successful meal.",
+          "note": null,
+          "component": "evaluation_form",
+          "component_params": {
+            "meals": [
+              "Breakfast",
+              "Lunch",
+              "Dinner",
+              "Dessert"
+            ],
+            "criteria": [
+              "Presentation",
+              "Taste"
+            ]
+          },
+          "subitems": []
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "text": "Camp Cooking. Do the following:",
+      "note": null,
+      "component": "text_lines",
+      "component_params": {
+        "lines": 6
+      },
+      "subitems": [
+        {
+          "id": "a",
+          "text": "Using the MyPlate food guide, plan a menu that includes four meals, one snack, and one dessert for your patrol (up to eight youth) on a camping trip. The four meals must include two breakfasts, one lunch, and one dinner. List the equipment and utensils needed.",
+          "note": "Resource: MyPlate Tools (website)",
+          "component": "meal_planner",
+          "component_params": {
+            "days": 4,
+            "meal_types": [
+              "Breakfast 1",
+              "Breakfast 2",
+              "Lunch",
+              "Dinner",
+              "Snack",
+              "Dessert"
+            ]
+          },
+          "subitems": []
+        },
+        {
+          "id": "b",
+          "text": "Find or create recipes for the four meals, the snack, and the dessert. Adjust menu items for the number to be served. Create a shopping list and budget to determine the per-person cost.",
+          "note": null,
+          "component": "shopping_list_table",
+          "component_params": {
+            "meal_sections": [
+              "Breakfast 1",
+              "Breakfast 2",
+              "Lunch",
+              "Dinner",
+              "Snack",
+              "Dessert"
+            ]
+          },
+          "subitems": []
+        },
+        {
+          "id": "c",
+          "text": "Share and discuss your menu plans and shopping list with your counselor.",
+          "note": null,
+          "component": "text_lines",
+          "component_params": {
+            "lines": 6
+          },
+          "subitems": []
+        },
+        {
+          "id": "d",
+          "text": "In the outdoors, cook two of the four meals using a camp stove OR backpacking stove. Use a skillet OR Dutch oven over campfire coals for the third meal. Cook the fourth meal in a foil pack OR on a skewer. Serve all meals to your patrol.",
+          "note": "Resources: How to Use a Propane Stove (video), 6 Tips to Master Foil Packet Cooking (video), Dutch Oven Basics for Beginners (video)",
+          "component": "text_lines",
+          "component_params": {
+            "lines": 6
+          },
+          "subitems": []
+        },
+        {
+          "id": "e",
+          "text": "In the outdoors, prepare one snack and one dessert. Serve both to your patrol.",
+          "note": null,
+          "component": "text_lines",
+          "component_params": {
+            "lines": 6
+          },
+          "subitems": []
+        },
+        {
+          "id": "f",
+          "text": "After each meal, have those you served evaluate the meal on presentation and taste, then evaluate your own meal. Discuss what you learned with your counselor.",
+          "note": null,
+          "component": "evaluation_form",
+          "component_params": {
+            "meals": [
+              "Breakfast 1",
+              "Breakfast 2",
+              "Lunch",
+              "Dinner",
+              "Snack",
+              "Dessert"
+            ],
+            "criteria": [
+              "Presentation",
+              "Taste"
+            ]
+          },
+          "subitems": []
+        },
+        {
+          "id": "g",
+          "text": "Lead the clean-up of equipment, utensils, and the cooking site after each meal. Properly store or dispose of unused ingredients, leftover food, dishwater and garbage.",
+          "note": "Resource: How to Wash Dishes at Camp (video)",
+          "component": "text_lines",
+          "component_params": {
+            "lines": 6
+          },
+          "subitems": []
+        },
+        {
+          "id": "h",
+          "text": "Discuss how you followed the Leave No Trace Seven Principles and the Outdoor Code when preparing your meals.",
+          "note": "Resources: 7 Principles of LNT (website), Outdoor Code (website)",
+          "component": "text_lines",
+          "component_params": {
+            "lines": 6
+          },
+          "subitems": []
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "text": "Trail and backpacking meals. Do the following:",
+      "note": null,
+      "component": "text_lines",
+      "component_params": {
+        "lines": 6
+      },
+      "subitems": [
+        {
+          "id": "a",
+          "text": "Using the MyPlate food guide, plan a day of meals for trail hiking or backpacking including one breakfast, one lunch, one dinner, and one snack. Meals must consider weight, not require refrigeration, and feed three to five people. List the equipment and utensils needed.",
+          "note": "Resource: MyPlate Kitchen (website)",
+          "component": "meal_planner",
+          "component_params": {
+            "days": 1,
+            "meal_types": [
+              "Breakfast",
+              "Lunch",
+              "Dinner",
+              "Snack"
+            ]
+          },
+          "subitems": []
+        },
+        {
+          "id": "b",
+          "text": "Create a shopping list for your meals, showing the amount of food needed and the cost for each meal.",
+          "note": null,
+          "component": "shopping_list_table",
+          "component_params": {
+            "meal_sections": [
+              "Breakfast",
+              "Lunch",
+              "Dinner",
+              "Snack"
+            ]
+          },
+          "subitems": []
+        },
+        {
+          "id": "c",
+          "text": "Share and discuss your menu and shopping list with your counselor. Your plan must include how to repackage foods to eliminate bulk, weight, and garbage.",
+          "note": "Resource: Repackaging Food for Backpacking (video)",
+          "component": "text_lines",
+          "component_params": {
+            "lines": 6
+          },
+          "subitems": []
+        },
+        {
+          "id": "d",
+          "text": "While on a trail hike or backpacking trip, prepare and serve two meals and a snack from your planned menu. At least one meal must be cooked over a fire or an approved trail stove.",
+          "note": "Resource: Lighting a Liquid Fuel Stove (video)",
+          "component": "text_lines",
+          "component_params": {
+            "lines": 6
+          },
+          "subitems": []
+        },
+        {
+          "id": "e",
+          "text": "After each meal, have those you served evaluate the meal on presentation and taste, then evaluate your own meal. Discuss what you learned with your counselor.",
+          "note": null,
+          "component": "evaluation_form",
+          "component_params": {
+            "meals": [
+              "Meal 1",
+              "Meal 2",
+              "Snack"
+            ],
+            "criteria": [
+              "Presentation",
+              "Taste"
+            ]
+          },
+          "subitems": []
+        },
+        {
+          "id": "f",
+          "text": "Explain to your counselor how you should divide the food and cooking supplies among the patrol to share the load. Discuss how to properly clean the cooking area and store food to protect it from animals.",
+          "note": "Resource: Cleaning Up and Washing Dishes (video)",
+          "component": "text_lines",
+          "component_params": {
+            "lines": 6
+          },
+          "subitems": []
+        }
+      ]
+    },
+    {
+      "id": "7",
+      "text": "Careers and Hobbies. Do ONE of the following:",
+      "note": null,
+      "component": "text_lines",
+      "component_params": {
+        "lines": 6
+      },
+      "subitems": [
+        {
+          "id": "a",
+          "text": "Identify three career opportunities that would use skills and knowledge in cooking. Pick one and research the training, education, certification requirements, experience, and expenses associated with entering the field. Research the prospects for employment, starting salary, advancement opportunities, and career goals. Discuss what you learned with your counselor and whether you might be interested in this career.",
+          "note": "Resources: 13 Careers in the Food Industry (website), Exploring Culinary Career Paths (video)",
+          "component": "career_research_form",
+          "component_params": {},
+          "subitems": []
+        },
+        {
+          "id": "b",
+          "text": "Identify how you might use the skills and knowledge in cooking to pursue a personal hobby or healthy lifestyle. Research the additional training required, expenses, and affiliation with organizations that would help you maximize the enjoyment and benefit you might gain from it. Discuss what you learned with your counselor and share your short-term and long-term goals.",
+          "note": "Resources: Sharpen Your Cooking Skills (website), 70 Cooking Hobbies (website)",
+          "component": "career_research_form",
+          "component_params": {},
+          "subitems": []
+        }
+      ]
+    }
+  ],
+  "appendices": []
+}
