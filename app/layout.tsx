@@ -21,6 +21,8 @@ export const metadata: Metadata = {
   description: "AI-powered Merit Badge workbooks for Scouts",
 };
 
+import { Analytics } from "@vercel/analytics/next";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,6 +32,7 @@ export default function RootLayout({
     <html lang="en" className={cn(newsreader.variable, spaceMono.variable)}>
       <body className="antialiased font-sans">
         {children}
+        <Analytics />
       </body>
     </html>
   );
