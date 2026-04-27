@@ -39,6 +39,10 @@ class handler(BaseHTTPRequestHandler):
             build_pdf_to_stream(parsed_data, pdf_stream)
             pdf_bytes = pdf_stream.getvalue()
 
+            # Build a smart filename from the badge title
+            badge_title = parsed_data.get("meta", {}).get("title", "workbook")
+            badge_slug = badge_title.lower().replace(" ", "-").replace("/", "-")
+
             if doc_format == "docx":
                 # Convert the PDF to DOCX using pdf2docx for a pixel-perfect result
                 print("Converting PDF to DOCX via pdf2docx...")
@@ -63,11 +67,11 @@ class handler(BaseHTTPRequestHandler):
                         os.unlink(tmp_docx_path)
                 
                 content_type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                filename = 'workbook.docx'
+                filename = f'{badge_slug}-workbook.docx'
             else:
                 file_bytes = pdf_bytes
                 content_type = 'application/pdf'
-                filename = 'workbook.pdf'
+                filename = f'{badge_slug}-workbook.pdf'
             
             self.send_response(200)
             self.send_header('Content-Type', content_type)

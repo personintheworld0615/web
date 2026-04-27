@@ -1,14 +1,23 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { supabase } from "@/lib/supabase";
 
 export default function Home() {
   const [text, setText] = useState("");
   const [format, setFormat] = useState<"pdf" | "docx">("pdf");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Pre-fill badge name from ?badge= query param (from Library page)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const badge = params.get("badge");
+    if (badge) setText(`Generate a workbook for the ${badge} merit badge`);
+  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -29,16 +38,29 @@ export default function Home() {
         throw new Error(errorData.error || "Failed to generate workbook");
       }
 
+      // Read badge name from response header (set by Python backend)
+      const disposition = response.headers.get("Content-Disposition") || "";
+      const nameMatch = disposition.match(/filename="(.+?)"/);
+      const filename = nameMatch ? nameMatch[1] : `workbook.${format}`;
+      const badgeName = filename.replace(/-workbook\.(pdf|docx)$/, "").replace(/-/g, " ");
+
       // Handle file download
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `merit-badge-workbook.${format}`;
+      a.download = filename;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
       a.remove();
+
+      // Log to Supabase library (fire and forget)
+      supabase.from("workbooks").insert({
+        badge_name: badgeName || "Unknown Badge",
+        format,
+        file_url: null, // no public storage URL yet
+      }).then(() => {});
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -165,8 +187,10 @@ export default function Home() {
 
       </div>
 
-      <footer className="absolute bottom-6 font-mono text-[10px] uppercase tracking-widest text-charcoal/40">
-        Engineered with ❤️ for Scouts
+      <footer className="absolute bottom-6 font-mono text-[10px] uppercase tracking-widest text-charcoal/40 flex items-center gap-4">
+        <span>Engineered with ❤️ for Scouts</span>
+        <span>•</span>
+        <Link href="/library" className="hover:text-olive transition-colors">Badge Library →</Link>
       </footer>
     </main>
   );
