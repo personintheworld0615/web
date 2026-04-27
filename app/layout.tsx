@@ -27,11 +27,20 @@ export const metadata: Metadata = {
     description: "Generate instant, fillable PDF and DOCX Merit Badge workbooks using AI. Simply paste your BSA scout requirements and download your free workbook.",
     type: "website",
     locale: "en_US",
+    images: [
+      {
+        url: "/badge_icon.png",
+        width: 1200,
+        height: 630,
+        alt: "BSA Merit Badge Workbook Generator",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "BSA Merit Badge Workbook Generator",
     description: "Generate instant, fillable PDF and DOCX Merit Badge workbooks using AI.",
+    images: ["/badge_icon.png"],
   },
   icons: {
     icon: "/favicon.png",
@@ -48,19 +57,39 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const schemaData = {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "BSA Merit Badge Workbook Generator",
-    "applicationCategory": "EducationalApplication",
-    "operatingSystem": "All",
-    "description": "Generate instant, fillable PDF and DOCX Merit Badge workbooks using AI. Simply paste your BSA scout requirements and download your free workbook.",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
+  const schemaData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "BSA Merit Badge Workbook Generator",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "All",
+      "description": "Generate instant, fillable PDF and DOCX Merit Badge workbooks using AI. Simply paste your BSA scout requirements and download your free workbook.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://bsaworkbooks.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Library",
+          "item": "https://bsaworkbooks.com/library"
+        }
+      ]
     }
-  };
+  ];
 
   return (
     <html lang="en" className={cn(newsreader.variable, spaceMono.variable)}>
