@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://bsaworkbooks.com";
+  const baseUrl = "https://boyscouts.vercel.app";
 
   return [
     {
