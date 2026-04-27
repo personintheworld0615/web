@@ -17,8 +17,22 @@ const spaceMono = Space_Mono({
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "BSA Workbook Generator",
-  description: "AI-powered Merit Badge workbooks for Scouts",
+  title: "BSA Merit Badge Workbook Generator - Free PDF & DOCX",
+  description: "Generate instant, fillable PDF and DOCX Merit Badge workbooks using AI. Simply paste your BSA scout requirements and download your free workbook.",
+  alternates: {
+    canonical: "https://bsaworkbooks.com",
+  },
+  openGraph: {
+    title: "BSA Merit Badge Workbook Generator - Free PDF & DOCX",
+    description: "Generate instant, fillable PDF and DOCX Merit Badge workbooks using AI. Simply paste your BSA scout requirements and download your free workbook.",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BSA Merit Badge Workbook Generator",
+    description: "Generate instant, fillable PDF and DOCX Merit Badge workbooks using AI.",
+  },
   icons: {
     icon: "/favicon.png",
     shortcut: "/favicon.png",
@@ -34,8 +48,28 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "BSA Merit Badge Workbook Generator",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "All",
+    "description": "Generate instant, fillable PDF and DOCX Merit Badge workbooks using AI. Simply paste your BSA scout requirements and download your free workbook.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  };
+
   return (
     <html lang="en" className={cn(newsreader.variable, spaceMono.variable)}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
+        />
+      </head>
       <body className="antialiased font-sans">
         <Navbar />
         <div className="h-24 md:h-32 pointer-events-none" />
