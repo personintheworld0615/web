@@ -343,11 +343,13 @@ def build_pdf_to_stream(data, stream):
         return t
     def underline_row(f_list):
         col_w = (W - 2*MARGIN) / len(f_list)
-        data = [[""]*len(f_list)]
-        t = Table(data, colWidths=[col_w]*len(f_list), rowHeights=[16])
-        t.setStyle(TableStyle([("BACKGROUND",(0,0),(-1,-1),BL),
+        # Use real AcroForm text fields so users can type directly into them
+        data = [[FillableField(col_w - 4, 16, name=f"field_{f['label'].replace(' ','_')}") for f in f_list]]
+        t = Table(data, colWidths=[col_w]*len(f_list), rowHeights=[20])
+        t.setStyle(TableStyle([
             ("LINEBELOW",(0,0),(-1,-1),1,colors.HexColor("#888")),
-            ("LEFTPADDING",(0,0),(-1,-1),4)]))
+            ("LEFTPADDING",(0,0),(-1,-1),2),
+            ("BOTTOMPADDING",(0,0),(-1,-1),0)]))
         return t
 
     story += [field_row(fields[:3]), underline_row(fields[:3]),

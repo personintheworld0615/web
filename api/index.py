@@ -11,7 +11,6 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 try:
     from generator.ai_parser import parse_requirements
     from generator.generate import build_pdf_to_stream
-    from generator.generate_docx import build_docx_to_stream
 except ImportError as e:
     print(f"Import error: {e}")
 
@@ -34,19 +33,41 @@ class handler(BaseHTTPRequestHandler):
             print(f"Parsing requirements for {doc_format}...")
             parsed_data = parse_requirements(raw_text)
             
-            output_stream = io.BytesIO()
+            # Always generate the PDF first (it's our source of truth)
+            print("Generating PDF...")
+            pdf_stream = io.BytesIO()
+            build_pdf_to_stream(parsed_data, pdf_stream)
+            pdf_bytes = pdf_stream.getvalue()
+
             if doc_format == "docx":
-                print("Generating DOCX...")
-                build_docx_to_stream(parsed_data, output_stream)
+                # Convert the PDF to DOCX using pdf2docx for a pixel-perfect result
+                print("Converting PDF to DOCX via pdf2docx...")
+                import tempfile, os
+                from pdf2docx import Converter
+                
+                # pdf2docx requires file paths, so we use temp files
+                with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp_pdf:
+                    tmp_pdf.write(pdf_bytes)
+                    tmp_pdf_path = tmp_pdf.name
+                
+                tmp_docx_path = tmp_pdf_path.replace(".pdf", ".docx")
+                try:
+                    cv = Converter(tmp_pdf_path)
+                    cv.convert(tmp_docx_path, start=0, end=None)
+                    cv.close()
+                    with open(tmp_docx_path, "rb") as f:
+                        file_bytes = f.read()
+                finally:
+                    os.unlink(tmp_pdf_path)
+                    if os.path.exists(tmp_docx_path):
+                        os.unlink(tmp_docx_path)
+                
                 content_type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
                 filename = 'workbook.docx'
             else:
-                print("Generating PDF...")
-                build_pdf_to_stream(parsed_data, output_stream)
+                file_bytes = pdf_bytes
                 content_type = 'application/pdf'
                 filename = 'workbook.pdf'
-
-            file_bytes = output_stream.getvalue()
             
             self.send_response(200)
             self.send_header('Content-Type', content_type)
