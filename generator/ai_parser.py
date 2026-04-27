@@ -8,8 +8,16 @@ from pathlib import Path
 from dotenv import load_dotenv
 import google.generativeai as genai
 
-load_dotenv(Path(__file__).parent / ".env")
-genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+# Try to load local .env but don't crash if missing (Vercel uses real env vars)
+try:
+    load_dotenv(Path(__file__).parent / ".env")
+    load_dotenv(Path(__file__).parent.parent / ".env.local")
+except:
+    pass
+
+api_key = os.environ.get("GEMINI_API_KEY")
+if api_key:
+    genai.configure(api_key=api_key)
 
 # ── Component type descriptions for the prompt ────────────────────────────────
 COMPONENT_DOCS = """
