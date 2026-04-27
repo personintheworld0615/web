@@ -11,6 +11,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 try:
     from generator.ai_parser import parse_requirements
     from generator.generate import build_pdf_to_stream
+    from generator.generate_docx import build_docx_to_stream
 except ImportError as e:
     print(f"Import error: {e}")
 
@@ -21,6 +22,7 @@ class handler(BaseHTTPRequestHandler):
             post_data = self.rfile.read(content_length)
             data = json.loads(post_data.decode('utf-8'))
             raw_text = data.get("text", "")
+            doc_format = data.get("format", "pdf").lower()
             
             if not raw_text:
                 self.send_response(400)
@@ -29,20 +31,29 @@ class handler(BaseHTTPRequestHandler):
                 self.wfile.write(json.dumps({"error": "No text provided"}).encode('utf-8'))
                 return
 
-            print("Parsing requirements...")
+            print(f"Parsing requirements for {doc_format}...")
             parsed_data = parse_requirements(raw_text)
             
-            print("Generating PDF...")
-            pdf_stream = io.BytesIO()
-            build_pdf_to_stream(parsed_data, pdf_stream)
-            pdf_bytes = pdf_stream.getvalue()
+            output_stream = io.BytesIO()
+            if doc_format == "docx":
+                print("Generating DOCX...")
+                build_docx_to_stream(parsed_data, output_stream)
+                content_type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                filename = 'workbook.docx'
+            else:
+                print("Generating PDF...")
+                build_pdf_to_stream(parsed_data, output_stream)
+                content_type = 'application/pdf'
+                filename = 'workbook.pdf'
+
+            file_bytes = output_stream.getvalue()
             
             self.send_response(200)
-            self.send_header('Content-Type', 'application/pdf')
-            self.send_header('Content-Disposition', 'attachment; filename="workbook.pdf"')
+            self.send_header('Content-Type', content_type)
+            self.send_header('Content-Disposition', f'attachment; filename="{filename}"')
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
-            self.wfile.write(pdf_bytes)
+            self.wfile.write(file_bytes)
 
         except Exception as e:
             traceback.print_exc()

@@ -6,6 +6,7 @@ import Image from "next/image";
 
 export default function Home() {
   const [text, setText] = useState("");
+  const [format, setFormat] = useState<"pdf" | "docx">("pdf");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -20,7 +21,7 @@ export default function Home() {
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ text, format }),
       });
 
       if (!response.ok) {
@@ -33,7 +34,7 @@ export default function Home() {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "merit-badge-workbook.pdf";
+      a.download = `merit-badge-workbook.${format}`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
@@ -72,7 +73,6 @@ export default function Home() {
       <div className="z-10 w-full max-w-4xl mx-auto flex flex-col items-center">
         
         <header className="mb-12 text-center">
-
           
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
@@ -88,7 +88,7 @@ export default function Home() {
             transition={{ delay: 0.2 }}
             className="text-lg md:text-xl text-charcoal/70 font-sans max-w-2xl mx-auto"
           >
-            Paste your merit badge or rank requirements below. Our AI will automatically structure them into a beautiful, fillable PDF workbook.
+            Paste your merit badge or rank requirements below. Our AI will automatically structure them into a beautiful, fillable PDF or editable Word doc.
           </motion.p>
         </header>
 
@@ -99,6 +99,26 @@ export default function Home() {
           onSubmit={handleSubmit} 
           className="w-full bg-white/50 backdrop-blur-md border border-charcoal/10 rounded-3xl p-6 md:p-8 shadow-2xl relative"
         >
+          {/* Format Toggle */}
+          <div className="flex justify-center mb-6">
+            <div className="bg-charcoal/5 p-1 rounded-full flex gap-1 border border-charcoal/10">
+              <button
+                type="button"
+                onClick={() => setFormat("pdf")}
+                className={`px-6 py-2 rounded-full font-mono text-xs font-bold uppercase transition-all ${format === "pdf" ? "bg-charcoal text-oat shadow-lg" : "text-charcoal/40 hover:text-charcoal"}`}
+              >
+                PDF (Official)
+              </button>
+              <button
+                type="button"
+                onClick={() => setFormat("docx")}
+                className={`px-6 py-2 rounded-full font-mono text-xs font-bold uppercase transition-all ${format === "docx" ? "bg-charcoal text-oat shadow-lg" : "text-charcoal/40 hover:text-charcoal"}`}
+              >
+                Word (Editable)
+              </button>
+            </div>
+          </div>
+
           <div className="relative">
             <textarea
               value={text}
@@ -111,7 +131,7 @@ export default function Home() {
               <div className="absolute inset-0 bg-white/80 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center gap-4">
                 <div className="w-12 h-12 border-4 border-olive/30 border-t-crimson rounded-full animate-spin" />
                 <p className="font-mono text-sm text-charcoal font-semibold animate-pulse">
-                  Analyzing requirements & generating PDF...
+                  Analyzing requirements & generating {format.toUpperCase()}...
                 </p>
                 <p className="font-mono text-xs text-charcoal/50">This may take ~20 seconds</p>
               </div>
@@ -131,7 +151,7 @@ export default function Home() {
               className="group relative px-10 py-4 bg-olive text-oat rounded-full font-sans text-lg md:text-xl font-bold italic tracking-wide overflow-hidden shadow-lg shadow-olive/30 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
             >
               <span className="relative z-10 flex items-center gap-2">
-                {loading ? "Generating..." : "Generate Workbook"}
+                {loading ? "Generating..." : `Download ${format.toUpperCase()}`}
                 {!loading && (
                   <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
