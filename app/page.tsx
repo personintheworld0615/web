@@ -105,11 +105,11 @@ export default function Home() {
           <div className="w-[150%] h-40 bg-olive -rotate-12 transform origin-center border-y-[12px] border-charcoal/20 blur-3xl" />
         </motion.div>
         
-        <motion.div 
-          style={{ y: formY, opacity: heroOpacity }}
-          className="z-10 w-full max-w-4xl mx-auto flex flex-col items-center"
-        >
-          <header className="mb-10 text-center max-w-3xl">
+        <div className="z-10 w-full max-w-4xl mx-auto flex flex-col items-center">
+          <motion.header 
+            style={{ opacity: heroOpacity, y: formY }}
+            className="mb-10 text-center max-w-3xl"
+          >
             <motion.h1 
               initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }}
               className="text-5xl md:text-7xl lg:text-8xl font-newsreader italic text-charcoal leading-tight mb-6"
@@ -123,7 +123,7 @@ export default function Home() {
             >
               Paste your BSA scout requirements. Our AI instantly structures them into a beautiful, fillable PDF or editable Word document.
             </motion.p>
-          </header>
+          </motion.header>
 
           <motion.form 
             initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.4 }}
