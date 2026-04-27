@@ -75,7 +75,7 @@ class handler(BaseHTTPRequestHandler):
             if doc_format == "docx":
                 # Convert the PDF to DOCX using pdf2docx for a pixel-perfect result
                 print("Converting PDF to DOCX via pdf2docx...")
-                import tempfile, os
+                import tempfile
                 from pdf2docx import Converter
                 
                 # pdf2docx requires file paths, so we use temp files
