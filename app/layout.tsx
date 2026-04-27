@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Newsreader, Space_Mono } from "next/font/google";
 import "./globals.css";
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
 
 const newsreader = Newsreader({
   subsets: ["latin"],
@@ -16,14 +14,12 @@ const spaceMono = Space_Mono({
   variable: "--font-space-mono",
 });
 
-export const metadata: Metadata = {
-  title: "Frontend Quickstart",
-  description: "High-end design engineering with AntiGravity",
-};
+import { cn } from "@/lib/utils";
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+export const metadata: Metadata = {
+  title: "BSA Workbook Generator",
+  description: "AI-powered Merit Badge workbooks for Scouts",
+};
 
 export default function RootLayout({
   children,
@@ -32,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={cn(newsreader.variable, spaceMono.variable)}>
-      <body className="antialiased">
+      <body className="antialiased font-sans">
         {children}
       </body>
     </html>
