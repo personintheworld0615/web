@@ -30,6 +30,35 @@ class handler(BaseHTTPRequestHandler):
                 self.wfile.write(json.dumps({"error": "No text provided"}).encode('utf-8'))
                 return
 
+            # IP-based Rate Limiting
+            supabase_url = os.environ.get("NEXT_PUBLIC_SUPABASE_URL")
+            supabase_key = os.environ.get("NEXT_PUBLIC_SUPABASE_ANON_KEY")
+            
+            if supabase_url and supabase_key:
+                client_ip = self.headers.get("x-forwarded-for", "127.0.0.1").split(",")[0].strip()
+                import requests
+                try:
+                    limit_res = requests.post(
+                        f"{supabase_url}/rest/v1/rpc/check_rate_limit",
+                        headers={
+                            "apikey": supabase_key,
+                            "Authorization": f"Bearer {supabase_key}",
+                            "Content-Type": "application/json"
+                        },
+                        json={"client_ip": client_ip},
+                        timeout=5
+                    )
+                    if limit_res.status_code == 200:
+                        is_allowed = limit_res.json()
+                        if not is_allowed:
+                            self.send_response(429)
+                            self.send_header('Content-type', 'application/json')
+                            self.end_headers()
+                            self.wfile.write(json.dumps({"error": "Rate limit exceeded. You can only generate 5 workbooks per day. Please try again tomorrow!"}).encode('utf-8'))
+                            return
+                except Exception as limit_err:
+                    print(f"Rate limit check failed, bypassing: {limit_err}")
+
             print(f"Parsing requirements for {doc_format}...")
             parsed_data = parse_requirements(raw_text)
             
