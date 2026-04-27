@@ -1,0 +1,19 @@
+# BSA Merit Badge Workbook Generator
+
+A universal, AI-powered tool to convert raw Boy Scouts of America (BSA) requirements into professional, fillable PDF workbooks.
+
+## Core Features
+- **AI Requirements Parsing**: Converts hierarchical text (1.a.i) into structured document trees.
+- **Dynamic Theming**: Automatically applies context-aware color palettes based on badge subject.
+- **Smart Components**: Generates checklists, comparison tables, and interactive response areas.
+- **Fillable PDF Output**: Injects interactive text fields for digital completion.
+- **DOCX Export**: High-fidelity Word document generation for custom editing.
+
+## Technical Details
+- **Frontend**: Next.js 15, Tailwind CSS, Framer Motion.
+- **Backend**: Python Vercel Functions, ReportLab PDF Engine.
+- **AI Model**: Gemini 2.0 Flash.
+
+## Links
+- Homepage: https://bsaworkbooks.com
+- Badge Library: https://bsaworkbooks.com/library

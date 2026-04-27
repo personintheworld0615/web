@@ -7,7 +7,8 @@ A powerful tool designed for Scouts and Leaders to instantly convert raw BSA mer
 ## 🚀 Features
 
 - **AI-Powered Parsing**: Automatically detects hierarchical requirement structures (1, a, i, etc.).
-- **Smart Components**: Intelligently generates checklists, tracking grids, meal planners, and structured tables based on requirement context.
+- **Dynamic Theming**: AI-driven color palettes (e.g., Safety Red, Nature Green) based on the badge subject.
+- **Smart Components**: Universal tables, checklists, and drawing areas that adapt to any merit badge.
 - **Fillable PDFs**: Generates interactive PDF text fields for digital completion.
 - **Editable Word Docs**: Pixel-perfect conversion to DOCX for custom editing.
 - **Modern UI**: A cinematic, responsive interface built with Next.js 15 and Framer Motion.

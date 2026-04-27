@@ -36,3 +36,9 @@ generator/.env
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Artifacts
+*.pdf
+*-parsed.json
+*-reqs-parsed.json
+generator/*.pdf

@@ -13,103 +13,70 @@ genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 
 # ── Component type descriptions for the prompt ────────────────────────────────
 COMPONENT_DOCS = """
-Available component types and when to use them:
+Available component types:
 
-- text_lines: Generic open-ended explanation, discussion, or description. Use as the fallback.
-  params: { "lines": 6 }   (increase lines for longer/multi-part answers)
+- text_lines: Generic open-ended area. AI determines 'lines' (2-20) based on verb (List=3, Explain=6, Discuss=10).
+  params: { "lines": int }
 
-- checklist: A list of discrete named items the user must check off one by one.
-  Use when the requirement lists specific named things (injuries, foods, methods, etc.).
-  params: { "items": ["Item 1", "Item 2", ...] }
+- checklist: A list of items to check off.
+  params: { "items": ["Item 1", ...] }
 
-- structured_table: Comparing N items across the SAME set of attributes/columns.
-  Use when requirement says "for each of the following X, describe/explain A, B, C".
-  params: { "row_header": "Method", "columns": ["Col A", "Col B", "Col C"], "rows": ["Row 1", ...] }
+- smart_table: A universal table component.
+  Use for comparisons, tracking, logs, or multi-column data.
+  params: { 
+    "headers": ["Col 1", "Col 2", ...], 
+    "rows": ["Row 1", ...], 
+    "col_types": ["text", "checkbox", "rating"], // default "text"
+    "row_height": 24 
+  }
 
-- tracking_grid: Logging or tracking something over multiple time periods (days, weeks).
-  Use when the requirement involves tracking/recording over N days or weeks.
-  params: { "columns": ["Day 1", "Day 2", ...], "row_labels": ["Activity", "Calories", ...] }
+- drawing_area: A boxed space for sketches, maps, or diagrams.
+  params: { "label": "Sketch your plan here", "height_inches": 3.0 }
 
-- meal_planner: Planning multiple meals across multiple days.
-  Use when the requirement involves planning breakfast/lunch/dinner across days.
-  params: { "days": 3, "meal_types": ["Breakfast", "Lunch", "Dinner", "Dessert"] }
-
-- shopping_list_table: A list of ingredients/items with quantity and cost columns.
-  Use when the requirement asks to "create a shopping list" or "list ingredients with cost".
-  params: { "meal_sections": ["Meal 1", "Meal 2", ...] }
-
-- food_groups_table: MyPlate food group breakdown with examples, servings, serving sizes.
-  Use when the requirement references MyPlate and asks for examples per food group.
-  params: { "groups": ["Fruits", "Vegetables", "Grains", "Proteins", "Dairy"] }
-
-- evaluation_form: Structured self/peer evaluation of an activity or product.
-  Use when the requirement asks to "evaluate" something on specific criteria after doing it.
-  params: { "meals": ["Breakfast", "Lunch", "Dinner"], "criteria": ["Presentation", "Taste"] }
-
-- career_research_form: Structured research for a career or hobby.
-  Use when the requirement asks to research a career including training, salary, goals, etc.
+- career_form: Structured research form for careers.
   params: {}
-
-- comparison_table: Side-by-side comparison of two or more distinct named things.
-  Use when the requirement says "explain the differences between X, Y, and Z".
-  params: { "items": ["Item A", "Item B", "Item C"], "attributes": ["Attribute 1", "Attribute 2", ...] }
 """
 
 SYSTEM_PROMPT = f"""
-You are a formatter for educational workbooks (like Boy Scouts merit badge workbooks).
-
-Your job is to read raw requirements text and return a structured JSON object describing the workbook.
-Each requirement item must have the most appropriate "component" type chosen from the list below.
-
-{COMPONENT_DOCS}
+You are a master educational designer. Your goal is to transform merit badge requirements into a high-end, structured, and visually logical workbook.
 
 Rules:
-1. Parse the top-level numbered requirements (1., 2., etc.) and their lettered sub-items (a., b., etc.).
-2. For sub-items that have their own numbered sub-items ((1), (2), etc.), nest them under "subitems".
-3. If the text contains "Resource:" or "Resources:" lines, put them in the "note" field (not in "text").
-4. Return ONLY valid JSON — no markdown fences, no explanation outside the JSON.
-5. The component must reflect the nature of the question, not just default to text_lines.
-6. For "discuss" or "explain" with NO specific list of items → text_lines.
-7. When in doubt between two types, choose the more structured one.
+1. DESIGN SENSE: Analyze the badge's subject and define a 'design' block:
+   - theme_color: A hex code representing the subject (e.g., #D32F2F for Safety, #2E7D32 for Nature, #0277BD for Tech).
+   - mood: One of ['standard', 'nature', 'safety', 'tech', 'academic'].
+2. COMPONENT SELECTION:
+   - Don't just use text_lines. If a requirement mentions "compare", "list features of", "track for X days", or "for each of the following", use a `smart_table`.
+   - If it mentions "draw", "sketch", "floor plan", or "map", use a `drawing_area`.
+3. RESOURCE EXTRACTION:
+   - Extract "Resource:" lines. Keep the text and the URL separate if possible.
+4. STRUCTURE:
+   - Maintain the numbering (1., a., (1)). Nest (1) under subitems.
+5. AUTO-POPULATE:
+   - If a requirement lists options (like 21 emergency situations), include all of them in the `rows` or `items` of the chosen component.
 
 Output JSON structure:
 {{
   "meta": {{
-    "title": "<Badge/Subject Name>",
+    "title": "Badge Name",
     "subtitle": "Merit Badge Workbook",
-    "description": "<any preamble/notes before requirement 1>",
-    "revision_note": "<any revision/date note, or empty string>",
-    "participant_fields": [
-      {{"label": "Scout's Name", "width": "large"}},
-      {{"label": "Unit", "width": "large"}},
-      {{"label": "Date Started", "width": "medium"}},
-      {{"label": "Counselor's Name", "width": "large"}},
-      {{"label": "Phone No.", "width": "large"}},
-      {{"label": "Email", "width": "large"}}
-    ],
-    "footer_contact": "",
-    "copyright": ""
+    "design": {{
+      "theme_color": "#hex",
+      "mood": "mood_name",
+      "icon": "icon_name" 
+    }},
+    "description": "Preamble text...",
+    "participant_fields": [...]
   }},
   "requirements": [
     {{
       "id": "1",
       "text": "...",
       "note": "...",
-      "component": "text_lines",
-      "component_params": {{"lines": 6}},
-      "subitems": [
-        {{
-          "id": "a",
-          "text": "...",
-          "note": "Resource: ...",
-          "component": "checklist",
-          "component_params": {{"items": ["Burns", "Cuts", "Choking"]}},
-          "subitems": []
-        }}
-      ]
+      "component": "smart_table",
+      "component_params": {{ ... }},
+      "subitems": []
     }}
-  ],
-  "appendices": []
+  ]
 }}
 """
 
