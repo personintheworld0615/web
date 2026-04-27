@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{{ meta.title }} - Merit Badge Workbook</title>
+<style>
+  /* ─── Page Setup ─────────────────────────────────────────── */
+  @page {
+    size: letter;
+    margin: 0.6in 0.65in 0.7in 0.65in;
+    @top-left   { content: "{{ meta.title }}"; font-family: Arial, sans-serif; font-size: 9pt; font-weight: bold; }
+    @top-right  { content: "Scout's Name: _______________________________"; font-family: Arial, sans-serif; font-size: 9pt; }
+    @bottom-left  { content: "{{ meta.title }} - Merit Badge Workbook"; font-family: Arial, sans-serif; font-size: 8.5pt; }
+    @bottom-right { content: "Page " counter(page) " of " counter(pages); font-family: Arial, sans-serif; font-size: 8.5pt; }
+  }
+  @page :first {
+    @top-left   { content: ""; }
+    @top-right  { content: ""; }
+    @bottom-left  { content: ""; }
+    @bottom-right { content: ""; }
+  }
+
+  /* ─── Base ───────────────────────────────────────────────── */
+  * { box-sizing: border-box; }
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 10pt;
+    color: #000;
+    line-height: 1.35;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* ─── Cover Page ─────────────────────────────────────────── */
+  .cover-page {
+    page: first;
+    text-align: center;
+    padding-top: 0.3in;
+  }
+  .cover-page h1 {
+    font-size: 28pt;
+    font-weight: bold;
+    margin: 0 0 2px 0;
+    letter-spacing: 0.5px;
+  }
+  .cover-page h2 {
+    font-size: 16pt;
+    font-weight: normal;
+    margin: 0 0 12px 0;
+  }
+  .cover-divider {
+    border: none;
+    border-top: 2px solid #000;
+    margin: 8px 0;
+  }
+  .cover-description {
+    font-size: 9pt;
+    text-align: left;
+    margin: 10px 0;
+    line-height: 1.4;
+  }
+  .revision-note {
+    font-size: 9pt;
+    text-align: center;
+    margin: 6px 0;
+    font-style: italic;
+  }
+
+  /* ─── Participant Fields ─────────────────────────────────── */
+  .participant-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    margin: 7px 0;
+  }
+  .participant-field {
+    display: flex;
+    align-items: flex-end;
+    flex: 1;
+    gap: 4px;
+  }
+  .participant-field label {
+    font-size: 9pt;
+    white-space: nowrap;
+    font-weight: bold;
+  }
+  .participant-field .field-line {
+    flex: 1;
+    border-bottom: 1px solid #555;
+    height: 16px;
+    background: #f0f4ff;
+  }
+
+  /* ─── Cover Footer ───────────────────────────────────────── */
+  .cover-footer-contact {
+    font-size: 8.5pt;
+    margin: 12px 0 6px 0;
+    text-align: left;
+  }
+  .cover-copyright {
+    font-size: 8pt;
+    margin: 8px 0 0 0;
+    text-align: left;
+    line-height: 1.4;
+    border-top: 1px solid #aaa;
+    padding-top: 6px;
+    color: #333;
+  }
+
+  /* ─── Page Break ─────────────────────────────────────────── */
+  .page-break { page-break-before: always; }
+
+  /* ─── Requirements ───────────────────────────────────────── */
+  .requirement-block {
+    margin-bottom: 14px;
+  }
+  .req-main {
+    font-weight: bold;
+    font-size: 10.5pt;
+    margin-bottom: 4px;
+  }
+  .req-number {
+    display: inline;
+  }
+  .subitem-block {
+    margin-left: 18px;
+    margin-bottom: 8px;
+  }
+  .subitem-label {
+    font-weight: bold;
+    margin-right: 4px;
+  }
+  .subitem-text {
+    display: inline;
+  }
+  .sub-subitem-block {
+    margin-left: 22px;
+    margin-bottom: 6px;
+  }
+  .sub-subitem-label {
+    font-weight: bold;
+    margin-right: 4px;
+  }
+
+  /* ─── Checkbox ───────────────────────────────────────────── */
+  .checkbox-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: 2px;
+  }
+  .checkbox-box {
+    width: 11px;
+    height: 11px;
+    border: 1.5px solid #000;
+    flex-shrink: 0;
+    margin-top: 2px;
+    background: #fff;
+  }
+
+  /* ─── Answer Area ────────────────────────────────────────── */
+  .answer-area {
+    background: #e8eef8;
+    border: 1px solid #a0b0cc;
+    padding: 4px 6px;
+    margin: 5px 0 5px 18px;
+    border-radius: 1px;
+  }
+  .answer-line {
+    border-bottom: 1px solid #8899bb;
+    height: 20px;
+    margin: 1px 0;
+  }
+
+  /* ─── Note / Callout ─────────────────────────────────────── */
+  .note-box {
+    font-size: 9pt;
+    font-style: italic;
+    margin: 4px 0 4px 22px;
+    color: #333;
+    border-left: 3px solid #aaa;
+    padding-left: 6px;
+  }
+
+  /* ─── Simple Table ───────────────────────────────────────── */
+  table.workbook-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0 6px 18px;
+    font-size: 9.5pt;
+  }
+  table.workbook-table th {
+    background: #c0c8d8;
+    border: 1.5px solid #000;
+    padding: 3px 6px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 9pt;
+  }
+  table.workbook-table td {
+    border: 1px solid #555;
+    padding: 4px 6px;
+    height: 20px;
+    font-size: 9pt;
+  }
+  .table-note {
+    font-size: 8.5pt;
+    margin: 3px 0 3px 22px;
+    font-style: italic;
+  }
+
+  /* ─── Budget Table ───────────────────────────────────────── */
+  table.budget-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8.5pt;
+    margin: 10px 0;
+  }
+  table.budget-table th, table.budget-table td {
+    border: 1.5px solid #000;
+    padding: 3px 5px;
+    text-align: center;
+  }
+  table.budget-table .col-label {
+    text-align: left;
+    font-weight: bold;
+    background: #f5f5f5;
+    min-width: 120px;
+  }
+  table.budget-table .month-header {
+    background: #c0c8d8;
+    font-weight: bold;
+    font-size: 9pt;
+  }
+  table.budget-table .sub-header {
+    background: #dde3ef;
+    font-size: 8pt;
+    font-weight: bold;
+  }
+  table.budget-table .section-header {
+    background: #b0b8c8;
+    font-weight: bold;
+    font-size: 8.5pt;
+    text-align: left;
+    padding-left: 5px;
+  }
+  table.budget-table .total-row td {
+    font-weight: bold;
+    background: #eaeef5;
+  }
+  table.budget-table .data-cell {
+    height: 18px;
+    min-width: 55px;
+  }
+
+  /* ─── Weekly Tracking Table ──────────────────────────────── */
+  table.tracking-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8.5pt;
+    margin: 8px 0;
+  }
+  table.tracking-table th {
+    background: #c0c8d8;
+    border: 1.5px solid #000;
+    padding: 3px 4px;
+    text-align: center;
+    font-weight: bold;
+  }
+  table.tracking-table td {
+    border: 1px solid #555;
+    padding: 3px 4px;
+    height: 22px;
+  }
+  table.tracking-table .week-label {
+    background: #dde3ef;
+    font-weight: bold;
+    font-size: 8pt;
+  }
+
+  /* ─── Time Management Table ──────────────────────────────── */
+  table.time-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8.5pt;
+    margin: 8px 0;
+  }
+  table.time-table th {
+    background: #c0c8d8;
+    border: 1.5px solid #000;
+    padding: 3px 4px;
+    text-align: center;
+    font-weight: bold;
+  }
+  table.time-table td {
+    border: 1px solid #555;
+    padding: 3px 4px;
+    height: 24px;
+  }
+  table.time-table .row-label {
+    background: #dde3ef;
+    font-weight: bold;
+    font-size: 8pt;
+  }
+  table.time-table .section-header td {
+    background: #b0b8c8;
+    font-weight: bold;
+    font-size: 8.5pt;
+  }
+
+  /* ─── Appendix Section ───────────────────────────────────── */
+  .appendix-title {
+    font-size: 12pt;
+    font-weight: bold;
+    margin: 10px 0 6px 0;
+    border-bottom: 1.5px solid #000;
+    padding-bottom: 3px;
+  }
+  .appendix-note {
+    font-size: 8.5pt;
+    font-style: italic;
+    color: #333;
+    margin: 4px 0 8px 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     COVER PAGE
+═══════════════════════════════════════════════════════════ -->
+<div class="cover-page">
+  <h1>{{ meta.title }}</h1>
+  <h2>{{ meta.subtitle }}</h2>
+  <hr class="cover-divider">
+
+  <div class="cover-description">
+    {% for line in meta.description.split('\n') %}
+      {{ line }}<br>
+    {% endfor %}
+  </div>
+
+  <hr class="cover-divider">
+  <div class="revision-note">{{ meta.revision_note }}</div>
+  <hr class="cover-divider">
+
+  <!-- Participant Fields Row 1 -->
+  <div class="participant-row">
+    {% for field in meta.participant_fields[:3] %}
+    <div class="participant-field">
+      <label>{{ field.label }}:</label>
+      <div class="field-line"></div>
+    </div>
+    {% endfor %}
+  </div>
+  <!-- Participant Fields Row 2 -->
+  <div class="participant-row">
+    {% for field in meta.participant_fields[3:] %}
+    <div class="participant-field">
+      <label>{{ field.label }}:</label>
+      <div class="field-line"></div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <hr class="cover-divider">
+  <div class="cover-footer-contact">
+    {% for line in meta.footer_contact.split('\n') %}
+      {{ line }}<br>
+    {% endfor %}
+  </div>
+  <div class="cover-copyright">
+    {% for line in meta.copyright.split('\n') %}
+      {{ line }}<br>
+    {% endfor %}
+  </div>
+</div><!-- /cover-page -->
+
+<!-- ═══════════════════════════════════════════════════════════
+     REQUIREMENTS PAGES
+═══════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+
+{% for req in requirements %}
+<div class="requirement-block">
+  <!-- Main requirement -->
+  <div class="req-main">
+    <span class="req-number">{{ req.id }}.</span>
+    {{ req.text }}
+  </div>
+
+  {% if req.answer_lines is defined and req.answer_lines > 0 %}
+  <div class="answer-area">
+    {% for _ in range(req.answer_lines) %}<div class="answer-line"></div>{% endfor %}
+  </div>
+  {% endif %}
+
+  {% if req.note is defined %}
+  <div class="note-box">{{ req.note }}</div>
+  {% endif %}
+
+  <!-- Sub-items (a, b, c …) -->
+  {% if req.subitems is defined %}
+  {% for sub in req.subitems %}
+  <div class="subitem-block">
+
+    {% if sub.type is defined and sub.type == 'checkbox' %}
+    <div class="checkbox-item">
+      <div class="checkbox-box"></div>
+      <div>
+        <span class="subitem-label">{{ sub.id }}.</span>
+        <span class="subitem-text">{{ sub.text }}</span>
+      </div>
+    </div>
+    {% else %}
+    <span class="subitem-label">{{ sub.id }}.</span>
+    <span class="subitem-text">{{ sub.text }}</span>
+    {% endif %}
+
+    {% if sub.note is defined %}
+    <div class="note-box">{{ sub.note }}</div>
+    {% endif %}
+
+    {% if sub.answer_lines is defined and sub.answer_lines > 0 %}
+    <div class="answer-area">
+      {% for _ in range(sub.answer_lines) %}<div class="answer-line"></div>{% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Simple Table -->
+    {% if sub.table is defined %}
+    <table class="workbook-table">
+      <tr>
+        {% for h in sub.table.headers %}
+        <th>{{ h }}</th>
+        {% endfor %}
+      </tr>
+      {% for _ in range(sub.table.rows) %}
+      <tr>
+        {% for _ in sub.table.headers %}<td></td>{% endfor %}
+      </tr>
+      {% endfor %}
+    </table>
+    {% if sub.table.notes is defined %}
+    {% for tn in sub.table.notes %}
+    <div class="table-note">{{ tn }}</div>
+    <div class="answer-area"><div class="answer-line"></div><div class="answer-line"></div></div>
+    {% endfor %}
+    {% endif %}
+    {% endif %}
+
+    <!-- Sub-sub-items (1, 2, 3 …) -->
+    {% if sub.subitems is defined %}
+    {% for ss in sub.subitems %}
+    <div class="sub-subitem-block">
+      {% if ss.type is defined and ss.type == 'checkbox' %}
+      <div class="checkbox-item">
+        <div class="checkbox-box"></div>
+        <div>
+          <span class="sub-subitem-label">({{ ss.id }}.)</span>
+          <span class="subitem-text">{{ ss.text }}</span>
+        </div>
+      </div>
+      {% else %}
+      <span class="sub-subitem-label">({{ ss.id }}.)</span>
+      <span class="subitem-text">{{ ss.text }}</span>
+      {% endif %}
+
+      {% if ss.answer_lines is defined and ss.answer_lines > 0 %}
+      <div class="answer-area">
+        {% for _ in range(ss.answer_lines) %}<div class="answer-line"></div>{% endfor %}
+      </div>
+      {% endif %}
+
+      {% if ss.table is defined %}
+      <table class="workbook-table">
+        <tr>{% for h in ss.table.headers %}<th>{{ h }}</th>{% endfor %}</tr>
+        {% for _ in range(ss.table.rows) %}<tr>{% for _ in ss.table.headers %}<td></td>{% endfor %}</tr>{% endfor %}
+      </table>
+      {% if ss.table.notes is defined %}
+      {% for tn in ss.table.notes %}
+      <div class="table-note">{{ tn }}</div>
+      <div class="answer-area"><div class="answer-line"></div><div class="answer-line"></div></div>
+      {% endfor %}
+      {% endif %}
+      {% endif %}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+  </div><!-- /subitem-block -->
+  {% endfor %}
+  {% endif %}
+
+</div><!-- /requirement-block -->
+{% endfor %}
+
+<!-- ═══════════════════════════════════════════════════════════
+     APPENDICES
+═══════════════════════════════════════════════════════════ -->
+{% for app in appendices %}
+<div class="page-break"></div>
+
+{% if app.type == 'budget_table' %}
+<div class="appendix-title">{{ app.title }}</div>
+<table class="budget-table">
+  <tr>
+    <td class="col-label" rowspan="2">Income Sources</td>
+    {% for m in range(1, app.months + 1) %}
+    <td class="month-header" colspan="3">Month {{ m }}</td>
+    {% endfor %}
+  </tr>
+  <tr>
+    {% for m in range(1, app.months + 1) %}
+    <td class="sub-header">Budget</td>
+    <td class="sub-header">Actual</td>
+    <td class="sub-header">Over/Under</td>
+    {% endfor %}
+  </tr>
+  {% for row in app.income_rows %}
+  <tr>
+    <td class="col-label">{{ row }}</td>
+    {% for m in range(1, app.months + 1) %}
+    <td class="data-cell"></td><td class="data-cell"></td><td class="data-cell"></td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+  <tr class="total-row">
+    <td class="col-label">Income Totals</td>
+    {% for m in range(1, app.months + 1) %}
+    <td class="data-cell"></td><td class="data-cell"></td><td class="data-cell"></td>
+    {% endfor %}
+  </tr>
+  <tr><td class="section-header" colspan="{{ app.months * 3 + 1 }}">Expenses</td></tr>
+  {% for row in app.expense_rows %}
+  <tr>
+    <td class="col-label">{{ row }}</td>
+    {% for m in range(1, app.months + 1) %}
+    <td class="data-cell"></td><td class="data-cell"></td><td class="data-cell"></td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+  <tr class="total-row">
+    <td class="col-label">Expense Totals</td>
+    {% for m in range(1, app.months + 1) %}
+    <td class="data-cell"></td><td class="data-cell"></td><td class="data-cell"></td>
+    {% endfor %}
+  </tr>
+  <tr class="total-row">
+    <td class="col-label">Income − Expenses</td>
+    {% for m in range(1, app.months + 1) %}
+    <td class="data-cell"></td><td class="data-cell"></td><td class="data-cell"></td>
+    {% endfor %}
+  </tr>
+</table>
+{% if app.note is defined %}
+<div class="appendix-note">Note: {{ app.note }}</div>
+{% endif %}
+
+{% elif app.type == 'weekly_tracking_table' %}
+<div class="appendix-title">{{ app.title }}</div>
+{% set weeks_per_page = 4 %}
+{% for page_idx in range(app.pages) %}
+  {% if page_idx > 0 %}<div class="page-break"></div>{% endif %}
+  <div style="font-size:9pt; margin-bottom:5px;">Page {{ page_idx + 1 }} of {{ app.pages }}</div>
+  <table class="tracking-table">
+    <tr>
+      {% for col in app.columns %}
+      <th>{{ col }}</th>
+      {% endfor %}
+    </tr>
+    {% set start_week = page_idx * weeks_per_page + 1 %}
+    {% set end_week = [start_week + weeks_per_page - 1, app.weeks]|min %}
+    {% for w in range(start_week, end_week + 1) %}
+    <tr>
+      <td class="week-label" colspan="{{ app.columns|length }}">Week {{ w }}{% if w == start_week and page_idx > 0 %} — Week {{ start_week - 1 }} Ending Balance{% endif %}</td>
+    </tr>
+    {% for _ in range(8) %}
+    <tr>
+      {% for _ in app.columns %}<td></td>{% endfor %}
+    </tr>
+    {% endfor %}
+    {% endfor %}
+  </table>
+{% endfor %}
+
+{% elif app.type == 'time_management_table' %}
+<div class="appendix-title">{{ app.title }}</div>
+<table class="time-table">
+  <tr>
+    <th>Set Activities</th>
+    <th>Scheduled Time</th>
+    {% for d in range(1, app.days + 1) %}
+    <th>Day {{ d }}</th>
+    {% endfor %}
+  </tr>
+  {% for _ in range(6) %}
+  <tr>
+    <td></td><td></td>
+    {% for _ in range(app.days) %}<td></td>{% endfor %}
+  </tr>
+  {% endfor %}
+  <tr class="section-header">
+    <td colspan="{{ app.days + 2 }}" style="background:#b0b8c8; font-weight:bold; padding:3px 5px;">To Do Tasks</td>
+  </tr>
+  {% for _ in range(6) %}
+  <tr>
+    <td></td><td></td>
+    {% for _ in range(app.days) %}<td></td>{% endfor %}
+  </tr>
+  {% endfor %}
+  <tr class="section-header">
+    <td colspan="{{ app.days + 2 }}" style="background:#b0b8c8; font-weight:bold; padding:3px 5px;">Actual Results</td>
+  </tr>
+  {% for _ in range(6) %}
+  <tr>
+    <td></td><td></td>
+    {% for _ in range(app.days) %}<td></td>{% endfor %}
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+{% endfor %}
+
+</body>
+</html>
