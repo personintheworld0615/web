@@ -192,7 +192,7 @@ export default function Home() {
               </button>
             </div>
           </motion.form>
-        </motion.div>
+        </div>
       </section>
 
       {/* How it Works Section */}
