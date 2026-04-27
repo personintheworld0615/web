@@ -69,7 +69,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-8 bg-oat relative overflow-hidden text-charcoal selection:bg-olive selection:text-oat">
+    <main className="min-h-screen flex flex-col items-center justify-center pt-24 pb-12 p-8 bg-oat relative overflow-hidden text-charcoal selection:bg-olive selection:text-oat">
       
       {/* Decorative Badges (Floating in background) */}
       <motion.div 

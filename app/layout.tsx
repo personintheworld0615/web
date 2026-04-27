@@ -27,6 +27,7 @@ export const metadata: Metadata = {
 };
 
 import { Analytics } from "@vercel/analytics/next";
+import Navbar from "@/components/Navbar";
 
 export default function RootLayout({
   children,
@@ -36,6 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn(newsreader.variable, spaceMono.variable)}>
       <body className="antialiased font-sans">
+        <Navbar />
         {children}
         <Analytics />
       </body>
