@@ -5,6 +5,7 @@ import { useState, FormEvent, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import { WorkbookPreview } from "@/components/WorkbookPreview";
 
 export default function Home() {
   const [text, setText] = useState("");
@@ -251,16 +252,14 @@ export default function Home() {
             </ul>
           </div>
           <div className="relative">
-            <div className="aspect-[4/5] bg-oat/10 rounded-3xl border border-oat/20 p-8 shadow-2xl backdrop-blur-sm flex flex-col justify-between transform rotate-2 hover:rotate-0 transition-transform duration-500">
-               <div className="w-full h-8 bg-oat/20 rounded-full mb-6" />
-               <div className="space-y-4 mb-auto">
-                 <div className="w-3/4 h-4 bg-oat/10 rounded-full" />
-                 <div className="w-full h-24 bg-oat/10 rounded-xl border border-oat/20" />
-                 <div className="w-5/6 h-4 bg-oat/10 rounded-full" />
-                 <div className="w-full h-32 bg-oat/10 rounded-xl border border-oat/20" />
-               </div>
-               <div className="mt-8 text-center font-newsreader italic text-2xl text-oat/50">Example Workbook Output</div>
-            </div>
+            <motion.div 
+              initial={{ rotate: 2, scale: 0.95 }}
+              whileHover={{ rotate: 0, scale: 1 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+              className="relative w-full"
+            >
+              <WorkbookPreview />
+            </motion.div>
           </div>
         </div>
       </section>
