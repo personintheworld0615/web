@@ -47,6 +47,9 @@ export const metadata: Metadata = {
     shortcut: "/favicon.png",
     apple: "/favicon.png",
   },
+  verification: {
+    google: "D4BPJER80BHGIndKWePXGtq6s9dM0MD3X-A3zCc34h0",
+  },
 };
 
 import { Analytics } from "@vercel/analytics/next";
