@@ -6,10 +6,9 @@ AI Parser — uses Gemini to convert raw requirements text into structured workb
 import os, json, re, sys
 from pathlib import Path
 from dotenv import load_dotenv
-import google.generativeai as genai
 
+# Load environment variables
 load_dotenv(Path(__file__).parent / ".env")
-genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 
 # ── Component type descriptions (Condensed) ───────────────────────────────────
 COMPONENT_DOCS = """
