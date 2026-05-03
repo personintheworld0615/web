@@ -47,6 +47,7 @@ class handler(BaseHTTPRequestHandler):
                 raise Exception(f"AI Parser Error: {str(e)}")
             
             print("🎨  Generating document...")
+            meta = parsed_data.get("meta", {})
             try:
                 pdf_stream = io.BytesIO()
                 build_pdf_to_stream(parsed_data, pdf_stream)
@@ -56,7 +57,7 @@ class handler(BaseHTTPRequestHandler):
                 print(f"❌  Document generation failed: {str(e)}")
                 raise Exception(f"Document Generation Error: {str(e)}")
 
-            badge_title = parsed_data.get("meta", {}).get("title", "workbook")
+            badge_title = meta.get("title", "workbook")
             badge_slug = badge_title.lower().replace(" ", "-").replace("/", "-")
 
             if doc_format == "docx":
