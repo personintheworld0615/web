@@ -17,72 +17,55 @@ except ImportError as e:
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
         try:
+            print("🚀  POST request received")
             content_length = int(self.headers.get('Content-Length', 0))
             post_data = self.rfile.read(content_length)
             data = json.loads(post_data.decode('utf-8'))
             raw_text = data.get("text", "")
             doc_format = data.get("format", "pdf").lower()
             
+            print(f"📄  Format: {doc_format}, Text length: {len(raw_text)}")
+
             if not raw_text:
+                print("⚠️  Error: No text provided")
                 self.send_response(400)
                 self.send_header('Content-type', 'application/json')
+                self.send_header('Access-Control-Allow-Origin', '*')
                 self.end_headers()
                 self.wfile.write(json.dumps({"error": "No text provided"}).encode('utf-8'))
                 return
 
-            # IP-based Rate Limiting (Temporarily disabled)
-            supabase_url = os.environ.get("NEXT_PUBLIC_SUPABASE_URL")
-            supabase_key = os.environ.get("NEXT_PUBLIC_SUPABASE_ANON_KEY")
-            
-            if False: # supabase_url and supabase_key:
-                client_ip = self.headers.get("x-forwarded-for", "127.0.0.1").split(",")[0].strip()
-                import requests
-                try:
-                    limit_res = requests.post(
-                        f"{supabase_url}/rest/v1/rpc/check_rate_limit",
-                        headers={
-                            "apikey": supabase_key,
-                            "Authorization": f"Bearer {supabase_key}",
-                            "Content-Type": "application/json"
-                        },
-                        json={"client_ip": client_ip},
-                        timeout=5
-                    )
-                    if limit_res.status_code == 200:
-                        is_allowed = limit_res.json()
-                        if not is_allowed:
-                            self.send_response(429)
-                            self.send_header('Content-type', 'application/json')
-                            self.end_headers()
-                            self.wfile.write(json.dumps({"error": "Rate limit exceeded. You can only generate 5 workbooks per day. Please try again tomorrow!"}).encode('utf-8'))
-                            return
-                except Exception as limit_err:
-                    print(f"Rate limit check failed, bypassing: {limit_err}")
+            # Supabase Rate Limiting (DISABLED)
+            print("⏭️  Skipping Supabase rate limit check (disabled)")
 
-            print(f"Parsing requirements for {doc_format}...")
-            parsed_data = parse_requirements(raw_text)
+            print("🤖  Calling AI Parser...")
+            try:
+                parsed_data = parse_requirements(raw_text)
+                print("✅  AI Parser success")
+            except Exception as e:
+                print(f"❌  AI Parser failed: {str(e)}")
+                raise Exception(f"AI Parser Error: {str(e)}")
             
-            # Always generate the PDF first (it's our source of truth)
-            print("Generating PDF...")
-            pdf_stream = io.BytesIO()
-            build_pdf_to_stream(parsed_data, pdf_stream)
-            pdf_bytes = pdf_stream.getvalue()
+            print("🎨  Generating document...")
+            try:
+                pdf_stream = io.BytesIO()
+                build_pdf_to_stream(parsed_data, pdf_stream)
+                pdf_bytes = pdf_stream.getvalue()
+                print(f"✅  Document generation success ({len(pdf_bytes)} bytes)")
+            except Exception as e:
+                print(f"❌  Document generation failed: {str(e)}")
+                raise Exception(f"Document Generation Error: {str(e)}")
 
-            # Build a smart filename from the badge title
             badge_title = parsed_data.get("meta", {}).get("title", "workbook")
             badge_slug = badge_title.lower().replace(" ", "-").replace("/", "-")
 
             if doc_format == "docx":
-                # Convert the PDF to DOCX using pdf2docx for a pixel-perfect result
-                print("Converting PDF to DOCX via pdf2docx...")
+                print("🔄  Converting to DOCX...")
                 import tempfile
                 from pdf2docx import Converter
-                
-                # pdf2docx requires file paths, so we use temp files
                 with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp_pdf:
                     tmp_pdf.write(pdf_bytes)
                     tmp_pdf_path = tmp_pdf.name
-                
                 tmp_docx_path = tmp_pdf_path.replace(".pdf", ".docx")
                 try:
                     cv = Converter(tmp_pdf_path)
@@ -90,10 +73,10 @@ class handler(BaseHTTPRequestHandler):
                     cv.close()
                     with open(tmp_docx_path, "rb") as f:
                         file_bytes = f.read()
+                    print("✅  DOCX conversion success")
                 finally:
                     os.unlink(tmp_pdf_path)
-                    if os.path.exists(tmp_docx_path):
-                        os.unlink(tmp_docx_path)
+                    if os.path.exists(tmp_docx_path): os.unlink(tmp_docx_path)
                 
                 content_type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
                 filename = f'{badge_slug}-workbook.docx'
@@ -101,25 +84,28 @@ class handler(BaseHTTPRequestHandler):
                 file_bytes = pdf_bytes
                 content_type = 'application/pdf'
                 filename = f'{badge_slug}-workbook.pdf'
-            
+
             self.send_response(200)
-            self.send_header('Content-Type', content_type)
+            self.send_header('Content-type', content_type)
             self.send_header('Content-Disposition', f'attachment; filename="{filename}"')
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
             self.wfile.write(file_bytes)
+            print(f"✨  Response sent: {filename}")
 
         except Exception as e:
+            print("🚨  CRITICAL ERROR in handler:")
             traceback.print_exc()
             self.send_response(500)
             self.send_header('Content-type', 'application/json')
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
-            self.wfile.write(json.dumps({"error": str(e)}).encode('utf-8'))
+            error_msg = f"{str(e)}\n\n{traceback.format_exc()}"
+            self.wfile.write(json.dumps({"error": error_msg}).encode('utf-8'))
 
     def do_OPTIONS(self):
-        self.send_response(200, "ok")
+        self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods', 'POST, OPTIONS')
-        self.send_header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type")
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
         self.end_headers()

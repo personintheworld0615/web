@@ -304,7 +304,9 @@ def budget_table(app):
 
 # ── Main ───────────────────────────────────────────────────────────────────────
 def build_pdf_to_stream(data, stream):
+    print("🏗️  Starting PDF build...")
     meta=data["meta"]; title=meta["title"]
+    print(f"📌  Title: {title}")
     
     hf=header_footer(title)
     frame=Frame(MARGIN,0.6*inch,W-2*MARGIN,H-1.15*inch,id="main")
@@ -317,7 +319,8 @@ def build_pdf_to_stream(data, stream):
              Paragraph(meta["subtitle"], STYLES["subtitle"]),
              HRFlowable(width="100%", thickness=2, color=colors.black), Spacer(1,12)]
 
-    # Description block — centred, with one bold line
+    # Description block
+    print("📝  Processing description...")
     desc_lines = [l.strip() for l in meta["description"].split("\n") if l.strip()]
     BOLD_TRIGGERS = ["counselors may not require", "no one may add", "NOTE:"]
     for line in desc_lines:
@@ -333,17 +336,19 @@ def build_pdf_to_stream(data, stream):
     
     story+=[Spacer(1,12)]
 
-    # Participant fields — inline underline style
+    # Participant fields
+    print("👥  Processing participant fields...")
     fields = meta["participant_fields"]
     def field_row(f_list):
+        if not f_list: return Table([[]])
         col_w = (W - 2*MARGIN) / len(f_list)
         data = [[Paragraph(f"<b>{f['label']}:</b>", STYLES["field_lbl"]) for f in f_list]]
         t = Table(data, colWidths=[col_w]*len(f_list), rowHeights=[14])
         t.setStyle(TableStyle([("FONTSIZE",(0,0),(-1,-1),9),("LEFTPADDING",(0,0),(-1,-1),0)]))
         return t
     def underline_row(f_list):
+        if not f_list: return Table([[]])
         col_w = (W - 2*MARGIN) / len(f_list)
-        # Use real AcroForm text fields so users can type directly into them
         data = [[FillableField(col_w - 4, 16, name=f"field_{f['label'].replace(' ','_')}") for f in f_list]]
         t = Table(data, colWidths=[col_w]*len(f_list), rowHeights=[20])
         t.setStyle(TableStyle([
@@ -359,8 +364,9 @@ def build_pdf_to_stream(data, stream):
               HRFlowable(width="100%", thickness=2, color=colors.black)]
 
     # Requirements
+    print(f"🔢  Processing {len(data['requirements'])} requirements...")
     story.append(PageBreak())
-    for req in data["requirements"]:
+    for i, req in enumerate(data["requirements"]):
         story+=build_item(req, level=0)
 
     # Appendices

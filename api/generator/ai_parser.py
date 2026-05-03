@@ -47,7 +47,13 @@ NO extra whitespace in JSON.
 
 def parse_requirements(raw_text: str) -> dict:
     api_key = os.environ["GEMINI_API_KEY"]
+    if not api_key:
+        print("❌  GEMINI_API_KEY is missing from environment!")
+        raise Exception("GEMINI_API_KEY is missing")
+
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
+    
+    print(f"📡  Sending request to Gemini (Model: gemini-2.0-flash)...")
     
     # Instruct Gemini to be concise to stay within token limits
     optimized_prompt = SYSTEM_PROMPT + "\n\nCRITICAL: The output must be valid JSON and NOT truncated. For long merit badges, follow these rules to save tokens:\n1. Be extremely brief in the 'text' fields. Summarize if needed.\n2. In the 'note' field, only include the most important resource URL, not all of them.\n3. DO NOT include any extra whitespace or newlines in the JSON output."
@@ -61,11 +67,23 @@ def parse_requirements(raw_text: str) -> dict:
         }
     }
     import requests as req_lib
-    resp = req_lib.post(url, json=payload, timeout=120)
-    resp.raise_for_status()
+    try:
+        resp = req_lib.post(url, json=payload, timeout=120)
+        print(f"📥  Gemini response status: {resp.status_code}")
+        resp.raise_for_status()
+    except Exception as e:
+        print(f"❌  API request failed: {str(e)}")
+        raise
+
     result = resp.json()
-    raw = result["candidates"][0]["content"]["parts"][0]["text"].strip()
-    return json.loads(raw)
+    try:
+        raw = result["candidates"][0]["content"]["parts"][0]["text"].strip()
+        print(f"✅  Received {len(raw)} characters of JSON from Gemini")
+        return json.loads(raw)
+    except Exception as e:
+        print(f"❌  JSON Parse failed: {str(e)}")
+        print(f"RAW RESPONSE SNIPPET: {str(result)[:500]}...")
+        raise
 
 
 if __name__ == "__main__":
