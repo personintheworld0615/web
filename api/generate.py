@@ -118,3 +118,14 @@ class handler(BaseHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type')
         self.end_headers()
+
+if __name__ == "__main__":
+    from http.server import HTTPServer
+    port = int(os.environ.get("PORT", 3002))
+    server = HTTPServer(('0.0.0.0', port), handler)
+    print(f"🚀  Termzy AI Python Backend running on http://localhost:{port}")
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\n👋  Stopping server...")
+        server.server_close()
