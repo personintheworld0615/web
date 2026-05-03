@@ -30,11 +30,11 @@ class handler(BaseHTTPRequestHandler):
                 self.wfile.write(json.dumps({"error": "No text provided"}).encode('utf-8'))
                 return
 
-            # IP-based Rate Limiting
+            # IP-based Rate Limiting (Temporarily disabled)
             supabase_url = os.environ.get("NEXT_PUBLIC_SUPABASE_URL")
             supabase_key = os.environ.get("NEXT_PUBLIC_SUPABASE_ANON_KEY")
             
-            if supabase_url and supabase_key:
+            if False: # supabase_url and supabase_key:
                 client_ip = self.headers.get("x-forwarded-for", "127.0.0.1").split(",")[0].strip()
                 import requests
                 try:
