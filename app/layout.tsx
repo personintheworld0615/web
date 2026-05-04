@@ -22,14 +22,14 @@ const spaceMono = Space_Mono({
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "BSA Merit Badge Workbook Generator - Free PDF & DOCX",
-  description: "Generate instant, fillable PDF and DOCX Merit Badge workbooks using AI. Simply paste your BSA scout requirements and download your free workbook.",
+  title: "Boy Scout Workbooks & Merit Badge Workbook List | PDF & DOCX",
+  description: "Generate free, fillable Boy Scout workbooks for any merit badge. Browse our complete merit badge workbook list and create custom PDFs or DOCX files instantly.",
   alternates: {
     canonical: "https://bsaworkbooks.com",
   },
   openGraph: {
-    title: "BSA Merit Badge Workbook Generator - Free PDF & DOCX",
-    description: "Generate instant, fillable PDF and DOCX Merit Badge workbooks using AI. Simply paste your BSA scout requirements and download your free workbook.",
+    title: "Boy Scout Workbooks & Merit Badge Workbook List | PDF & DOCX",
+    description: "Generate free, fillable Boy Scout workbooks for any merit badge. Browse our complete merit badge workbook list and create custom PDFs or DOCX files instantly.",
     type: "website",
     locale: "en_US",
     images: [
@@ -43,8 +43,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "BSA Merit Badge Workbook Generator",
-    description: "Generate instant, fillable PDF and DOCX Merit Badge workbooks using AI.",
+    title: "Boy Scout Workbooks & Merit Badge Workbook List",
+    description: "Generate free, fillable Boy Scout workbooks for any merit badge. Browse our complete merit badge workbook list.",
     images: ["/badge_icon.png"],
   },
   icons: {
@@ -109,7 +109,6 @@ export default function RootLayout({
       </head>
       <body className="antialiased font-sans">
         <Navbar />
-        <div className="h-24 md:h-32 pointer-events-none" />
         {children}
         <Analytics />
       </body>

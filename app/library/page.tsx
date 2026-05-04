@@ -263,7 +263,7 @@ export default function LibraryPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-6xl md:text-8xl font-display italic text-forest mb-6 tracking-tight leading-[0.8]"
           >
-            Badge <br />Library
+            Merit Badge <br />Workbook List
           </motion.h1>
           
           <motion.p
@@ -272,7 +272,7 @@ export default function LibraryPage() {
             transition={{ delay: 0.1 }}
             className="text-earth/60 text-xl max-w-xl font-medium leading-relaxed"
           >
-            A curated inventory of Eagle Scout heritage. Browse official requirements and explore the community's generated field-work.
+            A curated inventory of Boy Scout workbooks and Eagle Scout heritage. Browse our comprehensive merit badge workbook list and explore the community's generated field-work.
           </motion.p>
         </header>
 
@@ -386,6 +386,30 @@ export default function LibraryPage() {
             </button>
           </div>
         )}
+        {/* SEO Content Section */}
+        <section className="mt-48 pt-24 border-t border-forest/10">
+          <div className="max-w-4xl mx-auto space-y-12">
+            <h2 className="text-4xl font-display italic text-forest tracking-tight">About our Boy Scout Workbooks</h2>
+            <div className="grid md:grid-cols-2 gap-12 text-earth/70 font-medium leading-relaxed">
+              <div className="space-y-6">
+                <p>
+                  Finding a reliable **merit badge workbook** is a critical step for any Scout on the path to Eagle. Our library provides a complete **merit badge workbook list** that is updated in real-time by the scouting community. Whether you are looking for "Eagle Required" badges or specialized electives, our generator ensures you have the most accurate requirements.
+                </p>
+                <p>
+                  Every **boy scout workbook** generated here is designed to be tactile and field-ready. We reconstruct complex nested lists and requirements into fillable PDFs and DOCX files that respect the tradition of scouting while embracing modern digital convenience.
+                </p>
+              </div>
+              <div className="space-y-6">
+                <p>
+                  Why use our **merit badge workbook list**? Official requirements from scouting.org can often be difficult to format for actual use in the field. Our tool takes those raw requirements and structures them into professional worksheets, complete with interactive text fields and perfectly nested sub-lists.
+                </p>
+                <p>
+                  From **Cooking Merit Badge workbooks** to **First Aid** and **Personal Management**, our archive covers the entire spectrum of BSA awards. Explore the library, search for your specific badge, and download your workbook to get started on your next advancement today.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </main>
   );

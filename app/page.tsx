@@ -192,7 +192,7 @@ export default function Home() {
         ref={heroRef} 
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="relative min-h-screen pt-20 md:pt-28 pb-20 px-6 lg:px-12 perspective-2000"
+        className="relative min-h-screen pt-24 md:pt-32 pb-20 px-6 lg:px-12 perspective-2000"
       >
         
         {/* Custom Ink Filter */}
@@ -234,7 +234,7 @@ export default function Home() {
                 transition={{ delay: skipIntro ? 0 : 0.4, duration: 0.6, ease: "backOut" }}
                 className="italic text-clay inline-block origin-center"
               >
-                Workbooks
+                Boy Scout Workbooks
               </motion.span>
             </motion.h1>
 
@@ -552,12 +552,31 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="py-24 border-t border-forest/10 flex flex-col items-center gap-10">
-        <div className="flex items-center gap-6">
-          <div className="h-px w-12 bg-forest/20" />
-          <Link href="/library" className="text-forest hover:text-clay transition-colors font-mono uppercase tracking-[0.3em] text-xs font-bold">
-            Explore the Library
-          </Link>
-          <div className="h-px w-12 bg-forest/20" />
+        <div className="flex flex-col items-center gap-10 w-full max-w-4xl px-6">
+          <div className="flex items-center gap-6 w-full">
+            <div className="h-px flex-1 bg-forest/20" />
+            <Link href="/library" className="text-forest hover:text-clay transition-colors font-mono uppercase tracking-[0.3em] text-xs font-bold">
+              Merit Badge Workbook List
+            </Link>
+            <div className="h-px flex-1 bg-forest/20" />
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 w-full text-center">
+            {[
+              { name: "Cooking", slug: "cooking" },
+              { name: "First Aid", slug: "first-aid" },
+              { name: "Citizenship", slug: "citizenship-in-the-community" },
+              { name: "Personal Mgmt", slug: "personal-management" }
+            ].map(badge => (
+              <Link 
+                key={badge.slug} 
+                href={`/library?badge=${badge.slug}`}
+                className="text-[10px] font-mono uppercase tracking-widest text-forest/40 hover:text-clay transition-colors font-bold"
+              >
+                {badge.name} Workbook
+              </Link>
+            ))}
+          </div>
         </div>
         <div className="text-center space-y-4">
           <p className="font-display text-2xl italic text-forest/40">Prepared For Life.</p>
