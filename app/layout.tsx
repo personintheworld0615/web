@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
-import { Newsreader, Space_Mono } from "next/font/google";
+import { Instrument_Serif, Hanken_Grotesk, Space_Mono } from "next/font/google";
 import "./globals.css";
 
-const newsreader = Newsreader({
+const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
-  variable: "--font-newsreader",
-  style: "italic",
+  variable: "--font-display",
+  weight: "400",
+});
+
+const hankenGrotesk = Hanken_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-sans",
 });
 
 const spaceMono = Space_Mono({
@@ -95,7 +100,7 @@ export default function RootLayout({
   ];
 
   return (
-    <html lang="en" className={cn(newsreader.variable, spaceMono.variable)}>
+    <html lang="en" className={cn(instrumentSerif.variable, hankenGrotesk.variable, spaceMono.variable)}>
       <head>
         <script
           type="application/ld+json"

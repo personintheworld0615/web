@@ -116,89 +116,95 @@ function BadgeCard({ badge, open, onToggle, workbooks }: {
   workbooks: Workbook[];
 }) {
   return (
-    <div className="border border-charcoal/10 rounded-2xl overflow-hidden bg-white/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-shadow">
-      <button
-        onClick={onToggle}
-        className="w-full flex items-center justify-between px-5 py-4 text-left"
-      >
-        <div className="flex items-center gap-3">
-          <span className="text-xl">🏅</span>
-          <div>
-            <span className="font-semibold text-charcoal text-sm md:text-base">{badge.name}</span>
-            {!badge.required && (
-              <span className="ml-2 text-[10px] font-mono uppercase tracking-wider bg-olive/10 text-olive px-2 py-0.5 rounded-full">choice</span>
-            )}
-          </div>
-        </div>
-        <motion.span
-          animate={{ rotate: open ? 180 : 0 }}
-          className="text-charcoal/40 text-lg"
-        >
-          ▾
-        </motion.span>
-      </button>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="overflow-hidden"
-          >
-            <div className="px-5 pb-5 border-t border-charcoal/5 pt-4">
-              <div className="flex flex-col sm:flex-row sm:items-start gap-4 mb-6">
-                <p className="text-sm text-charcoal/60 leading-relaxed flex-1 italic">{badge.description}</p>
-              </div>
+    <motion.div 
+      layout
+      className={`relative group ${open ? "col-span-full" : "col-span-1"}`}
+    >
+      <div className={`badge-border-sm rounded-[2rem] overflow-hidden transition-all duration-500 ${open ? "bg-parchment shadow-2xl" : "bg-white/40 hover:bg-white hover:-translate-y-1"}`}>
 
-              <div className="space-y-2">
-                <h3 className="font-mono text-[10px] uppercase tracking-widest text-charcoal/30 mb-2">Generated Workbooks</h3>
-                {workbooks.length === 0 ? (
-                  <p className="text-xs text-charcoal/40 font-mono italic p-4 bg-charcoal/5 rounded-xl border border-dashed border-charcoal/10 text-center">
-                    No workbooks generated yet for this badge.
-                  </p>
-                ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {workbooks.map(wb => (
-                      <WorkbookCard key={wb.id} wb={wb} />
-                    ))}
-                  </div>
-                )}
-              </div>
+        <button
+          onClick={onToggle}
+          className="w-full flex items-center justify-between px-8 py-6 text-left"
+        >
+          <div className="flex items-center gap-5">
+            <div className="w-12 h-12 rounded-full bg-forest/5 flex items-center justify-center border border-forest/10">
+               <span className="text-xl">🏅</span>
             </div>
+            <div>
+              <span className="font-display text-2xl text-forest tracking-tight">{badge.name}</span>
+              {!badge.required && (
+                <span className="ml-3 text-[9px] font-mono uppercase tracking-widest bg-clay/10 text-clay px-2 py-0.5 rounded-full font-bold">Choice</span>
+              )}
+            </div>
+          </div>
+          <motion.div
+            animate={{ rotate: open ? 180 : 0 }}
+            className="w-8 h-8 rounded-full flex items-center justify-center border border-forest/10 text-forest/40"
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+        </button>
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="overflow-hidden"
+            >
+              <div className="px-8 pb-8 border-t border-forest/5 pt-6">
+                <div className="flex flex-col sm:flex-row sm:items-start gap-6 mb-8">
+                  <p className="text-base text-earth/60 leading-relaxed flex-1 italic font-medium">{badge.description}</p>
+                </div>
+
+                <div className="space-y-4">
+                  <h3 className="font-mono text-[9px] uppercase tracking-[0.3em] text-forest/30 font-bold">Tactile Archive Feed</h3>
+                  {workbooks.length === 0 ? (
+                    <div className="p-8 bg-forest/5 rounded-2xl border border-dashed border-forest/20 text-center">
+                      <p className="text-xs text-forest/40 font-mono italic">No generated heritage found for this badge yet.</p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {workbooks.map(wb => (
+                        <WorkbookCard key={wb.id} wb={wb} />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
   );
 }
 
 function WorkbookCard({ wb }: { wb: Workbook }) {
   return (
     <div
-      className="bg-white/40 border border-charcoal/5 rounded-xl p-3 flex items-center justify-between gap-3 hover:bg-white/80 transition-colors"
+      className="bg-white/60 border border-forest/5 rounded-2xl p-4 flex items-center justify-between gap-4 hover:shadow-lg hover:border-forest/20 transition-all duration-300 group"
     >
-      <div className="flex items-center gap-2 overflow-hidden">
-        <span className="text-lg shrink-0">{wb.format === "pdf" ? "📄" : "📝"}</span>
+      <div className="flex items-center gap-3 overflow-hidden">
+        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${wb.format === "pdf" ? "bg-crimson/10" : "bg-clay/10"}`}>
+          <span className="text-lg">{wb.format === "pdf" ? "📄" : "📝"}</span>
+        </div>
         <div className="overflow-hidden">
-          <p className="text-xs text-charcoal/40 font-mono truncate">{timeAgo(wb.created_at)}</p>
+          <p className="text-[10px] text-forest/30 font-mono uppercase tracking-widest font-bold mb-1">{timeAgo(wb.created_at)}</p>
+          <div className="flex items-center gap-2">
+             <span className="font-display text-sm text-forest italic">Workbook {wb.format.toUpperCase()}</span>
+          </div>
         </div>
       </div>
-      <div className="flex items-center gap-2">
-        <span className={`text-[9px] font-mono uppercase tracking-widest px-1.5 py-0.5 rounded-full ${
-          wb.format === "pdf" 
-            ? "bg-crimson/10 text-crimson" 
-            : "bg-olive/10 text-olive"
-        }`}>
-          {wb.format}
-        </span>
+      <div className="flex items-center gap-3">
         {wb.file_url && (
           <a
             href={wb.file_url}
             download
-            className="px-2 py-1 bg-charcoal text-oat rounded-full font-mono text-[9px] uppercase tracking-widest hover:bg-olive transition-colors"
+            className="w-10 h-10 bg-forest text-oat rounded-full flex items-center justify-center hover:bg-clay transition-colors shadow-lg shadow-forest/20 group-hover:scale-110 transition-transform"
           >
-            Get
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
           </a>
         )}
       </div>
@@ -237,102 +243,147 @@ export default function LibraryPage() {
   const recentWorkbooks = workbooks.slice(0, 4);
 
   return (
-    <main className="min-h-screen bg-oat text-charcoal pt-8 p-6 md:p-12">
-      <div className="max-w-4xl mx-auto">
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-5xl md:text-6xl font-newsreader italic text-charcoal mb-2"
-        >
-          Badge Library
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-charcoal/60 text-lg mb-8"
-        >
-          All Eagle Scout required merit badges — plus a live feed of generated workbooks.
-        </motion.p>
+    <main className="min-h-screen bg-oat text-forest pt-24 p-6 md:p-12 relative overflow-hidden">
+      {/* Decorative Background Elements */}
+      <div className="absolute top-0 left-0 w-full h-full noise pointer-events-none opacity-[0.03]" />
+      <div className="absolute -top-24 -right-24 w-96 h-96 bg-forest/5 rounded-full blur-[100px]" />
+      
+      <div className="max-w-7xl mx-auto relative">
+        <header className="mb-20">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="mb-6"
+          >
+            <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-forest/40 font-bold">Library</span>
+          </motion.div>
+          
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-6xl md:text-8xl font-display italic text-forest mb-6 tracking-tight leading-[0.8]"
+          >
+            Badge <br />Library
+          </motion.h1>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-earth/60 text-xl max-w-xl font-medium leading-relaxed"
+          >
+            A curated inventory of Eagle Scout heritage. Browse official requirements and explore the community's generated field-work.
+          </motion.p>
+        </header>
 
-        {/* Search Bar */}
+        {/* Search "Sticky Label" */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="mb-12 relative"
+          className="mb-20 sticky top-8 z-50 flex justify-center"
         >
-          <input
-            type="text"
-            placeholder="Search merit badges..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-white/60 backdrop-blur-sm border border-charcoal/10 rounded-2xl px-6 py-4 outline-none focus:border-olive focus:ring-2 focus:ring-olive/20 transition-all text-charcoal placeholder:text-charcoal/30 font-mono text-sm"
-          />
-          <div className="absolute right-5 top-1/2 -translate-y-1/2 text-charcoal/30">
-            🔍
+          <div className="relative w-full max-w-2xl bg-parchment badge-border-sm p-1 rounded-2xl shadow-2xl">
+            <input
+              type="text"
+              placeholder="Search the Archive..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-transparent border-2 border-forest/5 rounded-xl px-8 py-5 outline-none focus:border-clay/30 transition-all text-forest placeholder:text-forest/20 font-display italic text-xl"
+            />
+            <div className="absolute right-8 top-1/2 -translate-y-1/2 text-forest/20">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </div>
           </div>
         </motion.div>
 
-        {/* Recently Generated */}
+        {/* Recently Generated - Staggered Grid */}
         {!searchQuery && recentWorkbooks.length > 0 && (
-          <section className="mb-14">
-            <h2 className="font-mono text-xs uppercase tracking-widest text-charcoal/40 mb-4 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-olive animate-pulse"></span>
-              Recently Generated
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {recentWorkbooks.map(wb => (
-                <WorkbookCard key={wb.id} wb={wb} />
+          <section className="mb-24">
+            <div className="flex items-center gap-6 mb-10">
+               <h2 className="font-mono text-[10px] uppercase tracking-[0.3em] text-clay font-bold">Recent Field Deployments</h2>
+               <div className="h-px flex-1 bg-clay/10" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {recentWorkbooks.map((wb, i) => (
+                <motion.div
+                  key={wb.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.1 }}
+                >
+                  <WorkbookCard wb={wb} />
+                </motion.div>
               ))}
             </div>
           </section>
         )}
 
-        {/* Eagle Required Badges */}
-        {requiredBadges.length > 0 && (
-          <section className="mb-14">
-            <h2 className="font-mono text-xs uppercase tracking-widest text-charcoal/40 mb-4">
-              Required Badges ({requiredBadges.length})
-            </h2>
-            <div className="flex flex-col gap-2">
-              {requiredBadges.map(badge => (
-                <BadgeCard
-                  key={badge.name}
-                  badge={badge}
-                  open={openBadge === badge.name}
-                  onToggle={() => setOpenBadge(openBadge === badge.name ? null : badge.name)}
-                  workbooks={getWorkbooksForBadge(badge.name)}
-                />
-              ))}
-            </div>
-          </section>
-        )}
+        {/* Bento Grid for Badges */}
+        <div className="space-y-24">
+          {requiredBadges.length > 0 && (
+            <section>
+              <div className="flex items-center gap-6 mb-10">
+                 <h2 className="font-mono text-[10px] uppercase tracking-[0.3em] text-forest font-bold">Eagle Required ({requiredBadges.length})</h2>
+                 <div className="h-px flex-1 bg-forest/10" />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+                {requiredBadges.map((badge, i) => (
+                  <motion.div
+                    key={badge.name}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.05 }}
+                  >
+                    <BadgeCard
+                      badge={badge}
+                      open={openBadge === badge.name}
+                      onToggle={() => setOpenBadge(openBadge === badge.name ? null : badge.name)}
+                      workbooks={getWorkbooksForBadge(badge.name)}
+                    />
+                  </motion.div>
+                ))}
+              </div>
+            </section>
+          )}
 
-        {/* Choice Badges */}
-        {choiceBadges.length > 0 && (
-          <section className="mb-14">
-            <h2 className="font-mono text-xs uppercase tracking-widest text-charcoal/40 mb-4">
-              Choice Badges ({choiceBadges.length})
-            </h2>
-            <div className="flex flex-col gap-2">
-              {choiceBadges.map(badge => (
-                <BadgeCard
-                  key={badge.name}
-                  badge={badge}
-                  open={openBadge === badge.name}
-                  onToggle={() => setOpenBadge(openBadge === badge.name ? null : badge.name)}
-                  workbooks={getWorkbooksForBadge(badge.name)}
-                />
-              ))}
-            </div>
-          </section>
-        )}
+          {choiceBadges.length > 0 && (
+            <section>
+              <div className="flex items-center gap-6 mb-10">
+                 <h2 className="font-mono text-[10px] uppercase tracking-[0.3em] text-forest font-bold">Elective Choice ({choiceBadges.length})</h2>
+                 <div className="h-px flex-1 bg-forest/10" />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {choiceBadges.map((badge, i) => (
+                  <motion.div
+                    key={badge.name}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.05 }}
+                  >
+                    <BadgeCard
+                      badge={badge}
+                      open={openBadge === badge.name}
+                      onToggle={() => setOpenBadge(openBadge === badge.name ? null : badge.name)}
+                      workbooks={getWorkbooksForBadge(badge.name)}
+                    />
+                  </motion.div>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
 
         {/* No Results */}
         {requiredBadges.length === 0 && choiceBadges.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-charcoal/40 font-mono italic">No badges found matching "{searchQuery}"</p>
+          <div className="text-center py-32">
+            <p className="text-forest/30 font-display text-3xl italic">No workbooks found</p>
+            <button 
+              onClick={() => setSearchQuery("")}
+              className="mt-6 font-mono text-[10px] uppercase tracking-widest text-clay hover:underline"
+            >
+              Clear Search Parameters
+            </button>
           </div>
         )}
       </div>

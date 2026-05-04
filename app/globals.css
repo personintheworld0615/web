@@ -1,24 +1,26 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Newsreader", serif;
+  --font-display: "Instrument Serif", serif;
+  --font-sans: "Hanken Grotesk", sans-serif;
   --font-mono: "Space Mono", monospace;
 
-  --color-oat: #fbf3e0;
-  --color-midnight: #1A1A2E;
-  --color-coral: #FF7F50;
-  --color-charcoal: #2A2A2A;
-  --color-olive: #4a5d23;
-  --color-khaki: #c3b091;
-  --color-crimson: #9e2a2b;
+  --color-oat: #f7f2e8;
+  --color-forest: #2d3a22;
+  --color-moss: #4a5d23;
+  --color-earth: #3c2f2f;
+  --color-clay: #a67c52;
+  --color-charcoal: #1a1a1a;
+  --color-parchment: #faf8f5;
 
-  --radius-xl: 3rem;
+  --radius-badge: 3rem;
+  --radius-button: 1rem;
 }
 
 @layer base {
   :root {
     --background: var(--color-oat);
-    --foreground: var(--color-midnight);
+    --foreground: var(--color-charcoal);
   }
 
   body {
@@ -30,7 +32,12 @@
     overflow-x: hidden;
   }
 
-  /* Global Noise Overlay */
+  h1, h2, h3, .font-display {
+    font-family: var(--font-display);
+    font-weight: 400;
+  }
+
+  /* Global Noise Overlay - Refined for paper feel */
   body::after {
     content: "";
     position: fixed;
@@ -38,14 +45,24 @@
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.05;
+    opacity: 0.04;
     z-index: 9999;
     pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   }
 }
 
 @layer utilities {
+  .badge-border {
+    border: 2px solid var(--color-charcoal);
+    box-shadow: 4px 4px 0px var(--color-charcoal);
+  }
+
+  .badge-border-sm {
+    border: 1px solid rgba(26, 26, 26, 0.1);
+    box-shadow: 2px 2px 0px rgba(26, 26, 26, 0.05);
+  }
+
   .text-balance {
     text-wrap: balance;
   }
