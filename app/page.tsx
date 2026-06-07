@@ -12,10 +12,47 @@ export default function Home() {
   const [text, setText] = useState("");
   const [format, setFormat] = useState<"pdf" | "docx">("pdf");
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [progressText, setProgressText] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<{ name: string; url: string } | null>(null);
   const [showSplash, setShowSplash] = useState(false);
   const [skipIntro, setSkipIntro] = useState(false);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (loading) {
+      setProgress(0);
+      setProgressText("Initializing AI generator...");
+      const texts = [
+        "Analyzing merit badge subject...",
+        "Connecting to Gemini 2.5 Flash...",
+        "Structuring requirement hierarchy...",
+        "Designing workbook theme & layout...",
+        "Generating fillable PDF forms...",
+        "Building smart tables & checklists...",
+        "Compiling document resources...",
+        "Finalizing file bytes..."
+      ];
+      
+      interval = setInterval(() => {
+        setProgress(prev => {
+          if (prev >= 95) {
+            return prev;
+          }
+          const increment = Math.random() * 12 + 4;
+          const nextVal = Math.min(prev + increment, 95);
+          const textIdx = Math.min(Math.floor((nextVal / 100) * texts.length), texts.length - 1);
+          setProgressText(texts[textIdx]);
+          return nextVal;
+        });
+      }, 700);
+    } else {
+      setProgress(0);
+      setProgressText("");
+    }
+    return () => clearInterval(interval);
+  }, [loading]);
 
   useEffect(() => {
     if (typeof window !== "undefined" && sessionStorage.getItem("introPlayed")) {
@@ -289,13 +326,67 @@ export default function Home() {
                     </div>
                   </div>
 
-                <div className="relative group">
+                <div className="relative group min-h-[350px]">
                   <textarea
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     placeholder="E.g. 1. Identify the three things to do when you see a forest fire..."
                     className="w-full bg-transparent min-h-[350px] p-0 text-lg md:text-xl text-forest placeholder:text-forest/10 focus:outline-none resize-none font-medium leading-relaxed border-b border-transparent focus:border-clay/20 transition-colors"
+                    disabled={loading}
                   />
+
+                  <AnimatePresence>
+                    {loading && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="absolute inset-0 bg-parchment/95 backdrop-blur-md z-20 flex flex-col items-center justify-center p-8 text-center rounded-2xl"
+                      >
+                        <div className="w-full max-w-md space-y-6">
+                          {/* Animated Badge Compass/Icon */}
+                          <div className="relative w-20 h-20 mx-auto">
+                            <motion.div
+                              animate={{ rotate: 360 }}
+                              transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+                              className="absolute inset-0 rounded-full border-2 border-dashed border-forest/30"
+                            />
+                            <motion.div
+                              animate={{ scale: [1, 1.1, 1] }}
+                              transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                              className="absolute inset-2 rounded-full bg-forest/5 flex items-center justify-center"
+                            >
+                              <svg className="w-6 h-6 text-forest" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                              </svg>
+                            </motion.div>
+                          </div>
+
+                          <div className="space-y-2">
+                            <h3 className="font-mono text-xs uppercase tracking-[0.3em] text-forest font-bold">
+                              Generating Workbook
+                            </h3>
+                            <p className="text-sm text-earth/60 font-mono min-h-[20px] transition-all duration-300">
+                              {progressText}
+                            </p>
+                          </div>
+
+                          {/* Progress Bar Container */}
+                          <div className="relative w-full h-2 bg-forest/10 rounded-full overflow-hidden">
+                            <motion.div
+                              className="absolute left-0 top-0 bottom-0 bg-clay rounded-full"
+                              style={{ width: `${progress}%` }}
+                              transition={{ ease: "easeOut", duration: 0.3 }}
+                            />
+                          </div>
+
+                          <div className="font-mono text-[10px] text-forest/40">
+                            {Math.round(progress)}% Complete
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                   
                   <AnimatePresence>
                     {!text && (
