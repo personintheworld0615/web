@@ -91,7 +91,7 @@ Output JSON structure:
 
 def parse_requirements(raw_text: str) -> dict:
     api_key = os.environ["GEMINI_API_KEY"]
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
     payload = {
         "contents": [{"parts": [{"text": SYSTEM_PROMPT + "\n\n---\nRAW REQUIREMENTS TEXT:\n\n" + raw_text}]}],
         "generationConfig": {"temperature": 0.1, "maxOutputTokens": 8192}

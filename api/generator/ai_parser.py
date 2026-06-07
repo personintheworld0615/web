@@ -52,9 +52,9 @@ def parse_requirements(raw_text: str) -> dict:
         print("❌  GEMINI_API_KEY is missing from environment!")
         raise Exception("GEMINI_API_KEY is missing")
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={api_key}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
     
-    print(f"📡  Sending request to Gemini (Model: gemini-2.0-flash)...")
+    print(f"📡  Sending request to Gemini (Model: gemini-2.5-flash)...")
     
     # Instruct Gemini to be concise to stay within token limits
     optimized_prompt = SYSTEM_PROMPT + "\n\nCRITICAL: The output must be valid JSON and NOT truncated. For long merit badges, follow these rules to save tokens:\n1. Be extremely brief in the 'text' fields. Summarize if needed.\n2. In the 'note' field, only include the most important resource URL, not all of them.\n3. DO NOT include any extra whitespace or newlines in the JSON output."
