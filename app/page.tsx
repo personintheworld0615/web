@@ -40,13 +40,13 @@ export default function Home() {
           if (prev >= 95) {
             return prev;
           }
-          const increment = Math.random() * 12 + 4;
+          const increment = Math.random() * 4 + 2;
           const nextVal = Math.min(prev + increment, 95);
           const textIdx = Math.min(Math.floor((nextVal / 100) * texts.length), texts.length - 1);
           setProgressText(texts[textIdx]);
           return nextVal;
         });
-      }, 700);
+      }, 1200);
     } else {
       setProgress(0);
       setProgressText("");

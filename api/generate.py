@@ -90,6 +90,7 @@ class handler(BaseHTTPRequestHandler):
             self.send_header('Content-type', content_type)
             self.send_header('Content-Disposition', f'attachment; filename="{filename}"')
             self.send_header('Access-Control-Allow-Origin', '*')
+            self.send_header('Access-Control-Expose-Headers', 'Content-Disposition')
             self.end_headers()
             self.wfile.write(file_bytes)
             print(f"✨  Response sent: {filename}")

@@ -118,7 +118,7 @@ function BadgeCard({ badge, open, onToggle, workbooks }: {
   return (
     <motion.div 
       layout
-      className={`relative group ${open ? "col-span-full" : "col-span-1"}`}
+      className="relative group"
     >
       <div className={`badge-border-sm rounded-[2rem] overflow-hidden transition-all duration-500 ${open ? "bg-parchment shadow-2xl" : "bg-white/40 hover:bg-white hover:-translate-y-1"}`}>
 
@@ -327,10 +327,12 @@ export default function LibraryPage() {
                  <h2 className="font-mono text-[10px] uppercase tracking-[0.3em] text-forest font-bold">Eagle Required ({requiredBadges.length})</h2>
                  <div className="h-px flex-1 bg-forest/10" />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
                 {requiredBadges.map((badge, i) => (
                   <motion.div
                     key={badge.name}
+                    layout
+                    className="col-span-1"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.05 }}
@@ -353,10 +355,12 @@ export default function LibraryPage() {
                  <h2 className="font-mono text-[10px] uppercase tracking-[0.3em] text-forest font-bold">Elective Choice ({choiceBadges.length})</h2>
                  <div className="h-px flex-1 bg-forest/10" />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
                 {choiceBadges.map((badge, i) => (
                   <motion.div
                     key={badge.name}
+                    layout
+                    className="col-span-1"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.05 }}
